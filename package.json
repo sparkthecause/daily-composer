@@ -1,20 +1,30 @@
 {
   "name": "daily-creator",
   "version": "0.1.0",
+  "description": "Admin interface for creating Spark Daily editions",
   "private": true,
-  "devDependencies": {
-    "react-scripts": "0.4.3"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sparkthecause/daily-creator.git"
+  },
+  "author": "Charles Burgess",
+  "bugs": {
+    "url": "https://github.com/sparkthecause/daily-creator/issues"
+  },
+  "homepage": "https://github.com/sparkthecause/daily-api",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "react-scripts": "0.4.3"
   }
 }
