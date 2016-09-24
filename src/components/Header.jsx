@@ -7,7 +7,7 @@ class Header extends Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">Daily Creator</a>
+            <a href="#">Daily Composer</a>
           </Navbar.Brand>
         </Navbar.Header>
       </Navbar>
