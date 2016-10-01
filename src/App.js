@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Header from './components/Header';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-          <Header />
-      </div>
-    );
-  }
+const App = () => {
+
+  const title = "Daily Composer";
+
+  return (
+    <div className="App">
+        <Header title={title} />
+    </div>
+  );
+
 }
 
 export default App;

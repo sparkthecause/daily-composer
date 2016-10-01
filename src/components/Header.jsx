@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Navbar } from 'react-bootstrap';
 
-class Header extends Component {
-  render() {
-    return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="#">Daily Composer</a>
-          </Navbar.Brand>
-        </Navbar.Header>
-      </Navbar>
-    );
-  }
+const Header = ({title}) => {
+
+  return (
+    <Navbar>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <a href="#">{title}</a>
+        </Navbar.Brand>
+      </Navbar.Header>
+    </Navbar>
+  );
 }
 
-export default Header
+export default Header;
