@@ -7,11 +7,11 @@ const Header = ({isApproved, onNext, onPrevious, publishDate}) => {
   return (
     <div>
       <a onClick={onPrevious}>
-        <img src={previousIcon} />
+        <img src={previousIcon} alt="<" />
       </a>
       <span>{publishDate}</span>
       <a onClick={onNext}>
-        <img src={nextIcon} />      
+        <img src={nextIcon} alt=">" />      
       </a>
     </div>
   );
