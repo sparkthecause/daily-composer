@@ -19,9 +19,7 @@
   },
   "homepage": "https://github.com/sparkthecause/daily-api",
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "react": "^15.3.2",
-    "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
