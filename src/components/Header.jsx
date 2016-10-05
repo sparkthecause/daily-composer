@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Header = ({title}) => {
+const Header = ({isApproved, onNext, onPrevious, publishDate}) => {
 
   return (
     <div>
-      {title}
+      <a onClick={onPrevious}>Previous</a>
+      <span>{publishDate}</span>
+      <a onClick={onNext}>Next</a>
     </div>
   );
 }

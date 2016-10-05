@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Cancel Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Cancel-Icon" fill="#FFFFFF">
+            <g id="X" transform="translate(6.500000, 6.500000)">
+                <polygon id="Line" points="10.3510458 11.5766976 10.9638717 12.1895235 12.1895235 10.9638717 11.5766976 10.3510458 2.68898908 1.46333732 2.0761632 0.850511446 0.850511446 2.0761632 1.46333732 2.68898908"></polygon>
+                <polygon id="Line-Copy" points="1.53057763 10.1486785 0.917751754 10.7615043 2.14340351 11.9871561 2.75622939 11.3743302 11.6439379 2.48662169 12.2567638 1.87379581 11.031112 0.648144056 10.4182862 1.26096993"></polygon>
+            </g>
+            <path d="M24,13 C24,6.92486775 19.0751322,2 13,2 C6.92486775,2 2,6.92486775 2,13 C2,19.0751322 6.92486775,24 13,24 C19.0751322,24 24,19.0751322 24,13 Z M0,13 C0,5.82029825 5.82029825,0 13,0 C20.1797017,0 26,5.82029825 26,13 C26,20.1797017 20.1797017,26 13,26 C5.82029825,26 0,20.1797017 0,13 Z" id="Oval-2"></path>
+        </g>
+    </g>
+</svg>
