@@ -1,12 +1,18 @@
 import React from 'react';
+import nextIcon from '../assets/icon-arrow-right.svg';
+import previousIcon from '../assets/icon-arrow-left.svg';
 
 const Header = ({isApproved, onNext, onPrevious, publishDate}) => {
 
   return (
     <div>
-      <a onClick={onPrevious}>Previous</a>
+      <a onClick={onPrevious}>
+        <img src={previousIcon} />
+      </a>
       <span>{publishDate}</span>
-      <a onClick={onNext}>Next</a>
+      <a onClick={onNext}>
+        <img src={nextIcon} />      
+      </a>
     </div>
   );
 }
