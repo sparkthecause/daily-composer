@@ -4,11 +4,17 @@ import './App.css';
 
 const App = () => {
 
-  const title = "Daily Composer";
+  const publishDate = "12/12/2016";
+  const onNext = () => alert("next");
+  const onPrevious = () => alert("previous");
 
   return (
     <div className="App">
-        <Header title={title} />
+        <Header
+          publishDate={publishDate}
+          isApproved={false}
+          onNext={onNext}
+          onPrevious={onPrevious} />
     </div>
   );
 
