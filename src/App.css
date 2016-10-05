@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  padding-top: 30px;
+}
+.header {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 18px;
+  color: #8E59CD;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
