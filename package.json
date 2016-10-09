@@ -18,6 +18,7 @@
     "url": "git+https://github.com/sparkthecause/daily-creator.git"
   },
   "author": "Charles Burgess",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sparkthecause/daily-creator/issues"
   },
