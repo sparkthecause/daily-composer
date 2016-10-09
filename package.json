@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Admin interface for creating Spark Daily editions",
   "private": true,
+  "engines": {
+    "node": "6.3.0",
+    "npm": "3.10.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -19,9 +23,7 @@
   },
   "homepage": "https://github.com/sparkthecause/daily-api",
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "react": "^15.3.2",
-    "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {

@@ -1,21 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import Header from './components/Header';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+const App = () => {
+
+  const publishDate = "12/12/2016"; // TODO: use dynamic date
+  const onApprove = () => alert("approve"); // TODO: Toggle approved state
+  const onInfo = () => alert("info"); // TODO: Toggle info menu
+  const onNext = () => alert("next"); // TODO: Navigate to next date
+  const onPrevious = () => alert("previous"); // TODO: Navigate to prev date
+
+  return (
+    <div className="App">
+      <div className="container">
+        <Header
+          isApproved={false}
+          onApprove={onApprove}
+          onInfo={onInfo}
+          onNext={onNext}
+          onPrevious={onPrevious}
+          publishDate={publishDate} />
       </div>
-    );
-  }
+    </div>
+  );
+
 }
 
 export default App;

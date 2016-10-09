@@ -1,3 +1,6 @@
+
+[ ![Codeship Status for sparkthecause/daily-composer](https://codeship.com/projects/5b8d3810-7054-0134-788c-46027ae0316a/status?branch=master)](https://app.codeship.com/projects/178178)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.  
