@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Admin interface for creating Spark Daily editions",
   "private": true,
+  "engines": {
+    "node": "6.3.0",
+    "npm": "3.10.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
