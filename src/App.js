@@ -5,6 +5,8 @@ import './App.css';
 const App = () => {
 
   const publishDate = "12/12/2016"; // TODO: use dynamic date
+  const onApprove = () => alert("approve"); // TODO: Toggle approved state
+  const onInfo = () => alert("info"); // TODO: Toggle info menu
   const onNext = () => alert("next"); // TODO: Navigate to next date
   const onPrevious = () => alert("previous"); // TODO: Navigate to prev date
 
@@ -12,10 +14,12 @@ const App = () => {
     <div className="App">
       <div className="container">
         <Header
-          publishDate={publishDate}
           isApproved={false}
+          onApprove={onApprove}
+          onInfo={onInfo}
           onNext={onNext}
-          onPrevious={onPrevious} />
+          onPrevious={onPrevious}
+          publishDate={publishDate} />
       </div>
     </div>
   );
