@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Editions = () => {
+const Editions = ({children}) => {
 
   // replace with dynamic data fetch
   const editions = [{
@@ -20,7 +20,12 @@ const Editions = () => {
     );
   })
 
-  return <ul>{editionLinks}</ul>;
+  return (
+    <div>
+      {children ? null : <ul>{editionLinks}</ul>}
+      {children}
+    </div>
+  );
 };
 
 export default Editions;

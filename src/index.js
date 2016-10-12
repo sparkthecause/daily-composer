@@ -9,8 +9,9 @@ import './index.css';
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <Route path="/editions" component={Editions} />
-      <Route path="/editions/:publishDate" component={Edition} />
+      <Route path="/editions" component={Editions}>
+        <Route path="/editions/:publishDate" component={Edition} />
+      </Route>
     </Route>
   </Router>,
   document.getElementById('root')
