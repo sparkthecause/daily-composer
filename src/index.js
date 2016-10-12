@@ -10,7 +10,7 @@ ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <Route path="/editions" component={Editions}>
-        <Route path="/editions/:publishDate" component={Edition} />
+        <Route path="/editions/:editionId" component={Edition} />
       </Route>
     </Route>
   </Router>,
