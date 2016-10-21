@@ -1,22 +1,17 @@
 import React from 'react';
+import templates from 'daily-templates';
+
+const blurbDomForData = (type, data) => {
+  const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
+  const Template = templates[templateName];
+  return (Template) ? <Template {...data}/> : null;
+};
 
 const Edition = ({blurbs}) => {
-
-  const listItem = (blurb) => {
-    return (
-      <li key={blurb.blurb_id}>{blurb.blurb_type}
-        <ul>
-          <li>{blurb.blurb_id}</li>
-          <li>{blurb.approved_at || 'Not Approved'}</li>
-        </ul>
-      </li>
-    );
-  };
-
   return(
-    <ol>
-      {blurbs.map((blurb) => listItem(blurb))}
-    </ol>
+    <div>
+      {blurbs.map((blurb) => blurbDomForData(blurb.blurb_type, blurb.data))}
+    </div>
   );
 };
 
