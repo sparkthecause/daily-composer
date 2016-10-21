@@ -24,14 +24,17 @@ const Edition = ({params}) => {
         "approved_at": "2016-04-30T23:39:59.360Z",
         "blurb_type": "header",
         "data": {
-          "img_src": "https://cdn.sparkthecause.com/daily/images/email_header_white.png"
+          "image": {
+            "alt": "Spark Daily",
+            "src": "https://cdn.sparkthecause.com/daily/images/email_header_white.png"
+          }
         }
       }, {
         "blurb_id": "bf93e88e-0f70-4f44-bcb9-590239378171",
         "position": 1,
         "edition_id": "346401bd-9957-4ee5-9bfc-f8f1b80cd767",
         "approved_at": "2016-01-30T05:00:00.000Z",
-        "blurb_type": "text",
+        "blurb_type": "paragraph",
         "data": {
           "text": "Text about pandas..."
         }
@@ -51,8 +54,14 @@ const Edition = ({params}) => {
         "approved_at": "2016-05-01T00:04:01.161Z",
         "blurb_type": "share",
         "data": {
-          "text_img_src": "https://cdn.sparkthecause.com/daily/images/share_text.png",
-          "email_img_src": "https://cdn.sparkthecause.com/daily/images/share_email.png"
+          "smsLink": "",
+          "smsImg": {
+            "src": "https://cdn.sparkthecause.com/daily/images/share_text.png"
+          },
+          "emailLink": "",
+          "emailImg": {
+            "src": "https://cdn.sparkthecause.com/daily/images/share_email.png"
+          }
         }
       }, {
         "blurb_id": "65b5f800-e43c-47b9-bc21-d376c6fc583b",
@@ -61,7 +70,7 @@ const Edition = ({params}) => {
         "approved_at": null,
         "blurb_type": "unsubscribe",
         "data": {
-          "href": "https://daily.sparkthecause.com/unsubscribe?id={{subscriber_id}}"
+          "link": "https://daily.sparkthecause.com/unsubscribe?id={{subscriber_id}}"
         }
       }]
     };
