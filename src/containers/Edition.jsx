@@ -13,8 +13,8 @@ const Edition = ({params}) => {
   const fetchEditionForId = (id) => {
     return {
       "edition_id": "346401bd-9957-4ee5-9bfc-f8f1b80cd767",
-      "publish_on": "2016-08-09T04:00:00.000Z",
-      "subject": "My Second Edition!",
+      "publish_on": "2016-10-22T04:00:00.000Z",
+      "subject": "The third is the bird",
       "approved_at": "2016-01-29T05:00:00.000Z",
       "css_href": "https://cdn.sparkthecause.com/daily/styles/style.css",
       "blurbs": [{
@@ -24,8 +24,7 @@ const Edition = ({params}) => {
         "approved_at": "2016-04-30T23:39:59.360Z",
         "blurb_type": "header",
         "data": {
-          "image": {
-            "alt": "Spark Daily",
+          "img": {
             "src": "https://cdn.sparkthecause.com/daily/images/email_header_white.png"
           }
         }
@@ -54,13 +53,17 @@ const Edition = ({params}) => {
         "approved_at": "2016-05-01T00:04:01.161Z",
         "blurb_type": "share",
         "data": {
-          "smsLink": "",
-          "smsImg": {
-            "src": "https://cdn.sparkthecause.com/daily/images/share_text.png"
+          "sms": {
+            "img": {
+              "src": "https://cdn.sparkthecause.com/daily/images/share_text.png"
+            },
+            "href": ""
           },
-          "emailLink": "",
-          "emailImg": {
-            "src": "https://cdn.sparkthecause.com/daily/images/share_email.png"
+          "email": {
+            "img": {
+              "src": "https://cdn.sparkthecause.com/daily/images/share_email.png"
+            },
+            "href": ""
           }
         }
       }, {
@@ -70,7 +73,7 @@ const Edition = ({params}) => {
         "approved_at": null,
         "blurb_type": "unsubscribe",
         "data": {
-          "link": "https://daily.sparkthecause.com/unsubscribe?id={{subscriber_id}}"
+          "href": "https://daily.sparkthecause.com/unsubscribe?id={{subscriber_id}}"
         }
       }]
     };
