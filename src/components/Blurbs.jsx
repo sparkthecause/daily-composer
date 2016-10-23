@@ -9,7 +9,7 @@ const blurbDomForData = (type, data) => {
 
 const Edition = ({blurbs}) => {
   return(
-    <div>
+    <div className="blurbs">
       {blurbs.map((blurb) => blurbDomForData(blurb.blurb_type, blurb.data))}
     </div>
   );

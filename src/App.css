@@ -12,3 +12,10 @@
   justify-content: space-around;
   align-items: flex-start;
 }
+.blurbs {
+  width: 300px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
