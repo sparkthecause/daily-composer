@@ -6,7 +6,7 @@ import infoIcon from '../assets/icon-info.svg'
 
 const Header = ({isApproved, onApprove, onInfo, onNext, onPrevious, publishDate}) => {
 
-   // TODO: #6 make this publishDate a label and a date picker for fast nav
+  // TODO: #6 make publishDate a date picker for fast nav
 
   return (
     <div className="header">

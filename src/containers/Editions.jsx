@@ -5,15 +5,17 @@ const Editions = ({children}) => {
 
   // replace with dynamic data fetch
   const editions = [{
-    publishDate: '20160504'
+    id: '346401bd-9957-4ee5-9bfc-f8f1b80cd767',
+      publishDate: '20160504'
   }, {
-    publishDate: '20160506'
+    id: '2164asdd-9944-4df5-7bfc-d8f1b80cd123',
+    publishDate: '20160214'
   }];
 
   const editionLinks = editions.map((edition) => {
     return (
-      <li key={edition.publishDate}>
-        <Link to={`/editions/${edition.publishDate}`}>
+      <li key={edition.id}>
+        <Link to={`/editions/${edition.id}`}>
           {edition.publishDate}
         </Link>
       </li>
