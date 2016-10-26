@@ -16,7 +16,7 @@ const Edition = ({params}) => {
       "publish_on": "2016-10-22T04:00:00.000Z",
       "subject": "The third is the bird",
       "approved_at": "2016-01-29T05:00:00.000Z",
-      "css_href": "https://cdn.sparkthecause.com/daily/styles/style.css",
+      "css_href": "http://cdn.sparkthecause.com.s3.amazonaws.com/daily/styles/email.css",
       "blurbs": [{
         "blurb_id": "2ffbde71-ffb1-4935-a104-ec005bd5ea71",
         "position": 0,
@@ -83,6 +83,7 @@ const Edition = ({params}) => {
 
   return(
     <div>
+      <link rel="stylesheet" type="text/css" href={editionData.css_href} />
       <Header
         isApproved={Boolean(editionData.approved_at)}
         onApprove={onApprove}

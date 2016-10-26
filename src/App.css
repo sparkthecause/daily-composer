@@ -4,18 +4,10 @@
 }
 .header {
   width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 20px auto;
   font-size: 18px;
   color: #8E59CD;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
-}
-.blurbs {
-  width: 300px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  margin-left: auto;
-  margin-right: auto;
 }
