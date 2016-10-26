@@ -83,6 +83,7 @@ const Edition = ({params}) => {
 
   return(
     <div>
+      <link rel="stylesheet" type="text/css" href={editionData.css_href} />
       <Header
         isApproved={Boolean(editionData.approved_at)}
         onApprove={onApprove}
