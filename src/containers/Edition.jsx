@@ -4,7 +4,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
-const Edition = ({ data: { loading, edition } }) => {
+const Edition = ({ approve, data: { loading, edition } }) => {
 
   console.log(loading, edition);
 
@@ -15,7 +15,7 @@ const Edition = ({ data: { loading, edition } }) => {
   );
 
   if (edition) {
-    const onApprove = () => alert("approve"); // TODO: Toggle approved state
+    const onApprove = () => approve(edition.id);
     const onInfo = () => alert("info"); // TODO: Toggle info menu
     const onNext = () => alert("next"); // TODO: Navigate to next date
     const onPrevious = () => alert("previous"); // TODO: Navigate to prev date
@@ -40,12 +40,14 @@ Edition.propTypes = {
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool.isRequired,
     edition: React.PropTypes.object,
-  }).isRequired
+  }).isRequired,
+  // mutate: React.PropTypes.func.isRequired
 };
 
 const EDITION_QUERY = gql`
   query currentEdition($editionId: ID!) {
     edition(id: $editionId) {
+      id
       approvedAt
       publishOn(format: "MM/DD/YYYY")
       cssHref
@@ -57,6 +59,13 @@ const EDITION_QUERY = gql`
     }
   }`;
 
+const APPROVE_MUTATION = gql`
+  mutation approveEdition($editionId: ID!) {
+    approveEdition(id: $editionId) {
+      id
+    }
+  }`;
+
 const withData = graphql(EDITION_QUERY, {
   options: ({params}) => ({
     variables: {
@@ -65,4 +74,12 @@ const withData = graphql(EDITION_QUERY, {
   })
 });
 
-export default withData(Edition);
+const withMutations = graphql(APPROVE_MUTATION, {
+  props: ({ mutate }) => ({
+    approve: (editionId) => mutate({
+      variables: { editionId }
+    }),
+  }),
+});
+
+export default withMutations(withData(Edition));
