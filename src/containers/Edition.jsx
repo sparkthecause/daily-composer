@@ -63,6 +63,7 @@ const APPROVE_MUTATION = gql`
   mutation approveEdition($editionId: ID!) {
     approveEdition(id: $editionId) {
       id
+      approvedAt
     }
   }`;
 

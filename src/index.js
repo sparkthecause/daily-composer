@@ -9,6 +9,12 @@ import Edition from './containers/Edition';
 import './index.css';
 
 const client = new ApolloClient({
+  dataIdFromObject: (result) => {
+    if (result.id && result.__typename) {
+      return result.__typename + result.id;
+    }
+    return null;
+  },
   networkInterface: createNetworkInterface({ uri: 'http://localhost:3002/graphql' }),
 });
 
