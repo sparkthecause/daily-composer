@@ -1,12 +1,10 @@
+import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import React from 'react';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
 const Edition = ({ approve, data: { loading, edition } }) => {
-
-  console.log(loading, edition);
 
   if (loading) return(
     <div>
@@ -68,7 +66,7 @@ const APPROVE_MUTATION = gql`
   }`;
 
 const withData = graphql(EDITION_QUERY, {
-  options: ({params}) => ({
+  options: ({ params }) => ({
     variables: {
       editionId: params.editionId
     }
