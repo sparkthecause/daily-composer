@@ -43,8 +43,8 @@ Edition.propTypes = {
 };
 
 const EDITION_QUERY = gql`
-  query currentEdition($editionId: ID!) {
-    edition(id: $editionId) {
+  query currentEdition($publishDate: Date!) {
+    edition(publishDate: $publishDate) {
       id
       approvedAt
       publishOn(format: "MM/DD/YYYY")
@@ -66,10 +66,8 @@ const APPROVE_MUTATION = gql`
   }`;
 
 const withData = graphql(EDITION_QUERY, {
-  options: ({ params }) => ({
-    variables: {
-      editionId: params.editionId
-    }
+  options: ({ params: { publishDate } }) => ({
+    variables: { publishDate }
   })
 });
 
