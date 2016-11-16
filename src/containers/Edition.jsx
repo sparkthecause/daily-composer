@@ -40,7 +40,8 @@ Edition.propTypes = {
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool.isRequired,
     edition: React.PropTypes.object,
-  }).isRequired
+  }).isRequired,
+  approve: React.PropTypes.func.isRequired
 };
 
 const EDITION_QUERY = gql`
