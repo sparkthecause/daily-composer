@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import moment from 'moment';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
@@ -15,8 +16,9 @@ const Edition = ({ approve, data: { loading, edition } }) => {
   if (edition) {
     const onApprove = () => approve(edition.id);
     const onInfo = () => alert("info"); // TODO: Toggle info menu
-    const onNext = () => alert("next"); // TODO: Navigate to next date
-    const onPrevious = () => alert("previous"); // TODO: Navigate to prev date
+    const nextDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
+    const previousDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
+    const publishDate = moment(edition.publishOn).format('ddd, MMM D')
 
     return(
       <div>
@@ -25,9 +27,9 @@ const Edition = ({ approve, data: { loading, edition } }) => {
           isApproved={Boolean(edition.approvedAt)}
           onApprove={onApprove}
           onInfo={onInfo}
-          onNext={onNext}
-          onPrevious={onPrevious}
-          publishDate={edition.publishOn} />
+          nextDate={nextDate}
+          previousDate={previousDate}
+          publishDate={publishDate} />
         <Blurbs blurbs={edition.blurbs} />
       </div>
     );
@@ -38,8 +40,7 @@ Edition.propTypes = {
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool.isRequired,
     edition: React.PropTypes.object,
-  }).isRequired,
-  // mutate: React.PropTypes.func.isRequired
+  }).isRequired
 };
 
 const EDITION_QUERY = gql`
@@ -47,7 +48,7 @@ const EDITION_QUERY = gql`
     edition(publishDate: $publishDate) {
       id
       approvedAt
-      publishOn(format: "MM/DD/YYYY")
+      publishOn
       cssHref
       blurbs {
         id
