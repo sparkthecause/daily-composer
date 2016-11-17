@@ -1,11 +1,11 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
-const Edition = ({ approve, data: { loading, edition } }) => {
+const Edition = ({ approve, create, data: { loading, edition } }) => {
 
   if (loading) return(
     <div>
@@ -37,12 +37,29 @@ const Edition = ({ approve, data: { loading, edition } }) => {
 };
 
 Edition.propTypes = {
+  approve: React.PropTypes.func.isRequired,
+  create: React.PropTypes.func.isRequired,
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool.isRequired,
     edition: React.PropTypes.object,
-  }).isRequired,
-  approve: React.PropTypes.func.isRequired
+  }).isRequired
 };
+
+const APPROVE_MUTATION = gql`
+  mutation approveEdition($editionId: ID!) {
+    approveEdition(id: $editionId) {
+      id
+      approvedAt
+    }
+  }`;
+
+const CREATE_MUTATION = gql`
+  mutation createEdition($publishDate: Date!) {
+    createEdition(publishDate: $publishDate) {
+      id
+      publishOn
+    }
+  }`;
 
 const EDITION_QUERY = gql`
   query currentEdition($publishDate: Date!) {
@@ -59,26 +76,24 @@ const EDITION_QUERY = gql`
     }
   }`;
 
-const APPROVE_MUTATION = gql`
-  mutation approveEdition($editionId: ID!) {
-    approveEdition(id: $editionId) {
-      id
-      approvedAt
-    }
-  }`;
-
-const withData = graphql(EDITION_QUERY, {
-  options: ({ params: { publishDate } }) => ({
-    variables: { publishDate }
-  })
-});
-
-const withMutations = graphql(APPROVE_MUTATION, {
-  props: ({ mutate }) => ({
-    approve: (editionId) => mutate({
-      variables: { editionId }
-    }),
+export default compose(
+  graphql(EDITION_QUERY, {
+    options: ({ params: { publishDate } }) => ({
+      variables: { publishDate }
+    })
   }),
-});
-
-export default withMutations(withData(Edition));
+  graphql(APPROVE_MUTATION, {
+    props: ({ mutate }) => ({
+      approve: (editionId) => mutate({
+        variables: { editionId }
+      })
+    })
+  }),
+  graphql(CREATE_MUTATION, {
+    props: ({ mutate }) => ({
+      create: (publishDate) => mutate({
+        variables: { publishDate }
+      })
+    })
+  })
+)(Edition);
