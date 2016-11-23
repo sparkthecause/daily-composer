@@ -35,5 +35,8 @@
   },
   "devDependencies": {
     "react-scripts": "0.6.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   }
 }

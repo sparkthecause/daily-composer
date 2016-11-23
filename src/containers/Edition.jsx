@@ -5,42 +5,69 @@ import moment from 'moment';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
-const Edition = ({ approve, create, data: { loading, edition } }) => {
+class Edition extends React.Component {
 
-  if (loading) return(
-    <div>
-      loading...
-    </div>
-  );
+  approveEdition = () => {
+    const { approveEdition, edition: { id } } = this.props;
+    approveEdition(id);
+  }
 
-  if (edition) {
-    const onApprove = () => approve(edition.id);
-    const onInfo = () => alert("info"); // TODO: Toggle info menu
+  createEdition = () => {
+    const { createEdition, params: { publishDate } } = this.props;
+    createEdition(publishDate);
+  }
+
+  showInfoPanel = () => {
+    alert("info");
+  }
+
+  render() {
+    const { data: { loading, edition, error }, params: { publishDate } } = this.props;
+    if (loading) {
+
+      return(
+        <div>
+          loading...
+        </div>
+      );
+
+    } else if (error) {
+
+      return(
+        <button onClick={this.createEdition}>
+          CREATE NEW EDITION FOR {publishDate}
+        </button>
+      );
+
+    }
+
     const nextDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
-    const publishDate = moment(edition.publishOn).format('ddd, MMM D')
+    const formattedPublishDate = moment(edition.publishOn).format('ddd, MMM D')
 
     return(
       <div>
         <link rel="stylesheet" type="text/css" href={edition.cssHref} />
         <Header
           isApproved={Boolean(edition.approvedAt)}
-          onApprove={onApprove}
-          onInfo={onInfo}
+          onApprove={this.approveEdition}
+          onInfo={this.showInfoPanel}
           nextDate={nextDate}
           previousDate={previousDate}
-          publishDate={publishDate} />
+          publishDate={formattedPublishDate} />
         <Blurbs blurbs={edition.blurbs} />
       </div>
     );
-  };
+
+  }
+
 };
 
 Edition.propTypes = {
   approve: React.PropTypes.func.isRequired,
-  create: React.PropTypes.func.isRequired,
+  createEdition: React.PropTypes.func.isRequired,
   data: React.PropTypes.shape({
-    loading: React.PropTypes.bool.isRequired,
+    loading: React.PropTypes.bool,
     edition: React.PropTypes.object,
   }).isRequired
 };
@@ -84,16 +111,29 @@ export default compose(
   }),
   graphql(APPROVE_MUTATION, {
     props: ({ mutate }) => ({
-      approve: (editionId) => mutate({
+      approveEdition: (editionId) => mutate({
         variables: { editionId }
       })
     })
   }),
   graphql(CREATE_MUTATION, {
     props: ({ mutate }) => ({
-      create: (publishDate) => mutate({
+      createEdition: (publishDate) => mutate({
         variables: { publishDate }
       })
     })
   })
 )(Edition);
+
+// updateQueries: {
+//     Comment: (prev, { mutationResult }) => {
+//       const newComment = mutationResult.data.submitComment;
+//       return update(prev, {
+//         entry: {
+//           comments: {
+//             $unshift: [newComment],
+//           },
+//         },
+//       });
+//     },
+//   },
