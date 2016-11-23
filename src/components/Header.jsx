@@ -23,7 +23,7 @@ const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishD
       </a>
       <span>{publishDate}</span>
       <a onClick={onApprove}>
-        <img
+        <img className={isApproved ? 'icon-approval-green' : 'icon-approval-gray'}
           src={checkIcon}
           alt={isApproved ? '+' : '-'} />
       </a>
