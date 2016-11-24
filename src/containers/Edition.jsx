@@ -8,7 +8,7 @@ import Blurbs from '../components/Blurbs';
 class Edition extends React.Component {
 
   approveEdition = () => {
-    const { approveEdition, edition: { id } } = this.props;
+    const { approveEdition, data: { edition: { id } } } = this.props;
     approveEdition(id);
   }
 
@@ -64,7 +64,7 @@ class Edition extends React.Component {
 };
 
 Edition.propTypes = {
-  approve: React.PropTypes.func.isRequired,
+  approveEdition: React.PropTypes.func.isRequired,
   createEdition: React.PropTypes.func.isRequired,
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool,
