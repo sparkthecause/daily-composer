@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
+import update from 'react-addons-update';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 
@@ -23,27 +24,41 @@ class Edition extends React.Component {
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
+
+    const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
+    const previousDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
+    const formattedPublishDate = moment(publishDate).format('ddd, MMM D');
+
     if (loading) {
 
       return(
         <div>
-          loading...
+          <Header
+          onInfo={this.showInfoPanel}
+          nextDate={nextDate}
+          previousDate={previousDate}
+          publishDate={formattedPublishDate} />
+          <span> loading... </span>
         </div>
       );
 
     } else if (error) {
 
       return(
-        <button onClick={this.createEdition}>
-          CREATE NEW EDITION FOR {publishDate}
-        </button>
+        <div>
+          <Header
+          onInfo={this.showInfoPanel}
+          nextDate={nextDate}
+          previousDate={previousDate}
+          publishDate={formattedPublishDate} />
+          <button onClick={this.createEdition}>
+            CREATE NEW EDITION FOR {publishDate}
+          </button>
+        </div>
+
       );
 
     }
-
-    const nextDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
-    const previousDate = moment(edition.publishOn).add(1, 'day').format('YYYY-MM-DD');
-    const formattedPublishDate = moment(edition.publishOn).format('ddd, MMM D')
 
     return(
       <div>
@@ -84,7 +99,14 @@ const CREATE_MUTATION = gql`
   mutation createEdition($publishDate: Date!) {
     createEdition(publishDate: $publishDate) {
       id
+      approvedAt
       publishOn
+      cssHref
+      blurbs {
+        id
+        type
+        data
+      }
     }
   }`;
 
@@ -119,21 +141,18 @@ export default compose(
   graphql(CREATE_MUTATION, {
     props: ({ mutate }) => ({
       createEdition: (publishDate) => mutate({
-        variables: { publishDate }
+        variables: { publishDate },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const newEdition = mutationResult.data.createEdition;
+            return update(prev, {
+              edition: {
+                $set: newEdition
+              }
+            });
+          }
+        }
       })
     })
   })
 )(Edition);
-
-// updateQueries: {
-//     Comment: (prev, { mutationResult }) => {
-//       const newComment = mutationResult.data.submitComment;
-//       return update(prev, {
-//         entry: {
-//           comments: {
-//             $unshift: [newComment],
-//           },
-//         },
-//       });
-//     },
-//   },

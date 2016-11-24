@@ -16,17 +16,21 @@ const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishD
           src={previousIcon}
           alt="<" />
       </Link>
-      <a onClick={onInfo}>
-        <img
-          src={infoIcon}
-          alt="i" />
-      </a>
+      {onInfo && isApproved !== undefined &&
+        <a onClick={onInfo}>
+          <img
+            src={infoIcon}
+            alt="i" />
+        </a>
+      }
       <span>{publishDate}</span>
-      <a onClick={onApprove}>
-        <img className={isApproved ? 'icon-approval-green' : 'icon-approval-gray'}
-          src={checkIcon}
-          alt={isApproved ? '+' : '-'} />
-      </a>
+      {onApprove && isApproved !== undefined &&
+        <a onClick={onApprove}>
+          <img className={isApproved ? 'icon-approval-green' : 'icon-approval-gray'}
+            src={checkIcon}
+            alt={isApproved ? '+' : '-'} />
+        </a>
+      }
       <Link to={`/editions/${nextDate}`}>
         <img
           src={nextIcon}
