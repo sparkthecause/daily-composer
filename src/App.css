@@ -11,3 +11,9 @@
   justify-content: space-around;
   align-items: flex-start;
 }
+.icon-approval-green {
+  background-color: green;
+}
+.icon-approval-gray {
+  background-color: none;
+}
