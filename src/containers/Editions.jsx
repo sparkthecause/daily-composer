@@ -1,33 +1,58 @@
 import React from 'react';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import moment from 'moment';
 import { Link } from 'react-router';
 
-const Editions = ({children}) => {
+class Editions extends React.Component {
 
-  // replace with dynamic data fetch
-  const editions = [{
-    id: '346401bd-9957-4ee5-9bfc-f8f1b80cd767',
-      publishDate: '2016-11-10'
-  }, {
-    id: '2164asdd-9944-4df5-7bfc-d8f1b80cd123',
-    publishDate: '2016-11-16'
-  }];
+  render() {
+    const { children, data: { editions, loading, error } } = this.props;
 
-  const editionLinks = editions.map((edition) => {
+    if (loading) {
+      return <div>loading...</div>;
+    }
+
+    if (error) {
+      return <div>Error!</div>;
+    }
+
+    const editionLinks = editions.map((edition) => {
+      return (
+        <li key={edition.id}>
+          <Link to={`/editions/${edition.publishOn}`}>
+            {edition.publishOn}
+          </Link>
+        </li>
+      );
+    })
+
     return (
-      <li key={edition.id}>
-        <Link to={`/editions/${edition.publishDate}`}>
-          {edition.publishDate}
-        </Link>
-      </li>
+      <div>
+        {children ? null : <ul>{editionLinks}</ul>}
+        {children}
+      </div>
     );
-  })
 
-  return (
-    <div>
-      {children ? null : <ul>{editionLinks}</ul>}
-      {children}
-    </div>
-  );
+  }
+
 };
 
-export default Editions;
+const EDITIONS_QUERY = gql`
+  query editionsForWeekOf($begOfWeek: Date!, $endOfWeek: Date!) {
+    editions(publishOnOrAfter: $begOfWeek publishOnOrBefore: $endOfWeek) {
+      id
+      publishOn (format: "YYYY-MM-DD")
+    }
+  }`;
+
+export default compose(
+  graphql(EDITIONS_QUERY, {
+    options: ({ location: { query: { weekOf } } }) => ({
+      variables: {
+        begOfWeek: moment.utc(weekOf).startOf('isoWeek').format('YYYY-MM-DD'),
+        endOfWeek: moment.utc(weekOf).endOf('isoWeek').format('YYYY-MM-DD')
+      }
+    })
+  })
+)(Editions);
