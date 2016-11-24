@@ -26,7 +26,7 @@ class Edition extends React.Component {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
-    const previousDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
+    const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
     const formattedPublishDate = moment(publishDate).format('ddd, MMM D');
 
     if (loading) {
@@ -100,7 +100,7 @@ const CREATE_MUTATION = gql`
     createEdition(publishDate: $publishDate) {
       id
       approvedAt
-      publishOn
+      publishOn (format: "YYYY-MM-DD")
       cssHref
       blurbs {
         id
@@ -115,7 +115,7 @@ const EDITION_QUERY = gql`
     edition(publishDate: $publishDate) {
       id
       approvedAt
-      publishOn
+      publishOn (format: "YYYY-MM-DD")
       cssHref
       blurbs {
         id
