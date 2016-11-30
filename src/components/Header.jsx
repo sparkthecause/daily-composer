@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import nextIcon from '../assets/icon-arrow-right.svg';
-import previousIcon from '../assets/icon-arrow-left.svg';
-import checkIcon from '../assets/icon-checkmark.svg';
-import infoIcon from '../assets/icon-info.svg'
+import nextIcon from '../assets/icon-arrow-right-color.svg';
+import previousIcon from '../assets/icon-arrow-left-color.svg';
+import unapprovedIcon from '../assets/icon-checkmark.svg';
+import approvedIcon from '../assets/icon-checkmark-color.svg';
+import infoIcon from '../assets/icon-info.svg';
 
 const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishDate}) => {
 
@@ -26,8 +27,8 @@ const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishD
       <span>{publishDate}</span>
       {onApprove && isApproved !== undefined &&
         <a onClick={onApprove}>
-          <img className={isApproved ? 'icon-approval-green' : 'icon-approval-gray'}
-            src={checkIcon}
+          <img
+            src={isApproved ? approvedIcon : unapprovedIcon}
             alt={isApproved ? '+' : '-'} />
         </a>
       }
