@@ -51,11 +51,16 @@ class Edition extends React.Component {
           nextDate={nextDate}
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
-          <button onClick={this.createEdition}>
-            CREATE NEW EDITION FOR {publishDate}
-          </button>
+        <div className="no-edition-found">
+          <p>No edition found.</p>
+          <p>Want to create one?</p>
+          <button
+            className="create-edition-button"
+            onClick={this.createEdition} >
+              create edition
+            </button>
+          </div>
         </div>
-
       );
 
     }

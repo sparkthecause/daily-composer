@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   padding-top: 30px;
+  text-align: center;
 }
 .header {
   width: 300px;
@@ -10,4 +11,23 @@
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
+}
+.no-edition-found {
+  padding-top: 20px;
+  font-size: 18px;
+  color: #959595;
+}
+.no-edition-found p {
+  margin: 10px 0 0 0;
+}
+.create-edition-button {
+  border: 3px solid #61C55D;
+  border-radius: 100px;
+  font-size: 18px;
+  color: #5BCC5D;
+  background-color: #EEFCE1;
+  padding: 10px;
+  margin: 40px 20px;
+  width: 60%;
+  cursor: pointer;
 }
