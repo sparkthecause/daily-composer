@@ -8,13 +8,17 @@ const blurbDomForData = (id, type, data) => {
   return (Template) ? <Template key={id} {...data}/> : null;
 };
 
-const Edition = ({ blurbs, onAddBlurb }) => {
+const Blurbs = ({ blurbs, onCreateBlurb }) => {
   return(
     <div className="blurbs">
       {blurbs.map(({ data, id, type }) => blurbDomForData(id, type, data))}
-      <AddBlurbButton onAddBlurb={onAddBlurb} />
+      <AddBlurbButton onAddBlurb={onCreateBlurb} />
     </div>
   );
 };
 
-export default Edition;
+Blurbs.propTypes = {
+  blurbs: React.PropTypes.array.isRequired,
+};
+
+export default Blurbs;

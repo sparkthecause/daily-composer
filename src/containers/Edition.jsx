@@ -5,6 +5,7 @@ import moment from 'moment';
 import update from 'react-addons-update';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
+import EditionNotFound from '../components/EditionNotFound';
 
 class Edition extends React.Component {
 
@@ -39,10 +40,10 @@ class Edition extends React.Component {
       return(
         <div>
           <Header
-          onInfo={this.showInfoPanel}
-          nextDate={nextDate}
-          previousDate={previousDate}
-          publishDate={formattedPublishDate} />
+            onInfo={this.showInfoPanel}
+            nextDate={nextDate}
+            previousDate={previousDate}
+            publishDate={formattedPublishDate} />
           <span> loading... </span>
         </div>
       );
@@ -52,22 +53,36 @@ class Edition extends React.Component {
       return(
         <div>
           <Header
-          onInfo={this.showInfoPanel}
-          nextDate={nextDate}
-          previousDate={previousDate}
-          publishDate={formattedPublishDate} />
-          <button onClick={this.createEdition}>
-            CREATE NEW EDITION FOR {publishDate}
-          </button>
+            onInfo={this.showInfoPanel}
+            nextDate={nextDate}
+            previousDate={previousDate}
+            publishDate={formattedPublishDate} />
+          <span> ERROR </span>
         </div>
+      );
 
+    } else if (!edition) {
+
+      return(
+        <div>
+          <Header
+            onInfo={this.showInfoPanel}
+            nextDate={nextDate}
+            previousDate={previousDate}
+            publishDate={formattedPublishDate} />
+          <EditionNotFound
+            createEdition={this.createEdition} />
+          </div>
       );
 
     }
 
     return(
       <div>
-        <link rel="stylesheet" type="text/css" href={edition.cssHref} />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href={edition.cssHref} />
         <Header
           isApproved={Boolean(edition.approvedAt)}
           onApprove={this.approveEdition}
@@ -77,7 +92,7 @@ class Edition extends React.Component {
           publishDate={formattedPublishDate} />
         <Blurbs
           blurbs={edition.blurbs}
-          onAddBlurb={this.createBlurb} />
+          onCreateBlurb={this.createBlurb} />
       </div>
     );
 

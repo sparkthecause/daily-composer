@@ -1,16 +1,16 @@
 import React from 'react';
-import addBlurbIcon from '../assets/icon-add-color.svg';
+import createBlurbIcon from '../assets/icon-add-color.svg';
 
-const AddBlurbButton = ({ onAddBlurb }) => {
+const CreateBlurbButton = ({ onCreateBlurb }) => {
   return(
     <div
-      className="add-blurb-container"
-      onClick={onAddBlurb} >
+      className="create-blurb-button"
+      onClick={onCreateBlurb} >
       <img
-        src={addBlurbIcon}
+        src={createBlurbIcon}
         alt="Create New Blurb" />
     </div>
   );
 };
 
-export default AddBlurbButton;
+export default CreateBlurbButton;

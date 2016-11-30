@@ -6,7 +6,7 @@ import unapprovedIcon from '../assets/icon-checkmark.svg';
 import approvedIcon from '../assets/icon-checkmark-color.svg';
 import infoIcon from '../assets/icon-info.svg';
 
-const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishDate}) => {
+const Header = ({ isApproved, nextDate, onApprove, onInfo, previousDate, publishDate }) => {
 
   // TODO: #6 make publishDate a date picker for fast nav
 
@@ -39,6 +39,15 @@ const Header = ({isApproved, nextDate, onApprove, onInfo, previousDate, publishD
       </Link>
     </div>
   );
-}
+};
+
+Header.propTypes = {
+  isApproved: React.PropTypes.bool,
+  nextDate: React.PropTypes.string.isRequired,
+  onApprove: React.PropTypes.func,
+  onInfo: React.PropTypes.func,
+  previousDate: React.PropTypes.string.isRequired,
+  publishDate: React.PropTypes.string.isRequired
+};
 
 export default Header;
