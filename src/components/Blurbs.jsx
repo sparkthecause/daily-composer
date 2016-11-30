@@ -7,12 +7,16 @@ const blurbDomForData = (id, type, data) => {
   return (Template) ? <Template key={id} {...data}/> : null;
 };
 
-const Edition = ({blurbs}) => {
+const Blurbs = ({ blurbs }) => {
   return(
     <div className="blurbs">
-      {blurbs.map(({data, id, type}) => blurbDomForData(id, type, data))}
+      {blurbs.map(({ data, id, type }) => blurbDomForData(id, type, data))}
     </div>
   );
 };
 
-export default Edition;
+Blurbs.propTypes = {
+  blurbs: React.PropTypes.array.isRequired,
+};
+
+export default Blurbs;
