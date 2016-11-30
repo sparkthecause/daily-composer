@@ -18,6 +18,11 @@ class Edition extends React.Component {
     createEdition(publishDate);
   }
 
+  createBlurb = () => {
+    const { createBlurb, data: { edition: { id } } } = this.props;
+    createBlurb(id);
+  }
+
   showInfoPanel = () => {
     alert("info");
   }
@@ -70,7 +75,9 @@ class Edition extends React.Component {
           nextDate={nextDate}
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
-        <Blurbs blurbs={edition.blurbs} />
+        <Blurbs
+          blurbs={edition.blurbs}
+          onAddBlurb={this.createBlurb} />
       </div>
     );
 
@@ -80,6 +87,7 @@ class Edition extends React.Component {
 
 Edition.propTypes = {
   approveEdition: React.PropTypes.func.isRequired,
+  createBlurb: React.PropTypes.func.isRequired,
   createEdition: React.PropTypes.func.isRequired,
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool,
@@ -87,7 +95,7 @@ Edition.propTypes = {
   }).isRequired
 };
 
-const APPROVE_MUTATION = gql`
+const APPROVE_EDITION_MUTATION = gql`
   mutation approveEdition($editionId: ID!) {
     approveEdition(id: $editionId) {
       id
@@ -95,7 +103,7 @@ const APPROVE_MUTATION = gql`
     }
   }`;
 
-const CREATE_MUTATION = gql`
+const CREATE_EDITION_MUTATION = gql`
   mutation createEdition($publishDate: Date!) {
     createEdition(publishDate: $publishDate) {
       id
@@ -107,6 +115,15 @@ const CREATE_MUTATION = gql`
         type
         data
       }
+    }
+  }`;
+
+const CREATE_BLURB_MUTATION = gql`
+  mutation createBlurb($type: String!, $editionId: ID) {
+    createBlurb(type: $type, editionId: $editionId) {
+      id
+      type
+      data
     }
   }`;
 
@@ -131,14 +148,14 @@ export default compose(
       variables: { publishDate }
     })
   }),
-  graphql(APPROVE_MUTATION, {
+  graphql(APPROVE_EDITION_MUTATION, {
     props: ({ mutate }) => ({
       approveEdition: (editionId) => mutate({
         variables: { editionId }
       })
     })
   }),
-  graphql(CREATE_MUTATION, {
+  graphql(CREATE_EDITION_MUTATION, {
     props: ({ mutate }) => ({
       createEdition: (publishDate) => mutate({
         variables: { publishDate },
@@ -148,6 +165,25 @@ export default compose(
             return update(prev, {
               edition: {
                 $set: newEdition
+              }
+            });
+          }
+        }
+      })
+    })
+  }),
+  graphql(CREATE_BLURB_MUTATION, {
+    props: ({ mutate }) => ({
+      createBlurb: (editionId) => mutate({
+        variables: { editionId, type: 'paragraph' },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const newBlurb = mutationResult.data.createBlurb;
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $unshift: [newBlurb]
+                }
               }
             });
           }

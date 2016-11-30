@@ -11,3 +11,13 @@
   justify-content: space-around;
   align-items: flex-start;
 }
+.add-blurb-container {
+  background: #EEFCE1;
+  border: 3px solid #ADE5AE;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px !important;
+  text-align: center;
+  vertical-align: center;
+  cursor: pointer;
+}
