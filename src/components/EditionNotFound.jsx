@@ -14,4 +14,8 @@ const EditionNotFound = ({ createEdition }) => {
   );
 };
 
+EditionNotFound.propTypes = {
+  createEdition: React.PropTypes.func.isRequired,
+};
+
 export default EditionNotFound;
