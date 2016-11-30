@@ -6,6 +6,7 @@ import update from 'react-addons-update';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
+import AddBlurbButton from '../components/AddBlurbButton';
 
 class Edition extends React.Component {
 
@@ -91,8 +92,8 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={edition.blurbs}
-          onCreateBlurb={this.createBlurb} />
+          blurbs={edition.blurbs} />
+        <AddBlurbButton onCreateBlurb={this.createBlurb} />
       </div>
     );
 

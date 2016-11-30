@@ -1,7 +1,6 @@
 .container {
   width: 100%;
   padding-top: 30px;
-  text-align: center;
 }
 .header {
   width: 300px;
@@ -13,16 +12,25 @@
   align-items: flex-start;
 }
 .create-blurb-button {
-  background: #EEFCE1;
-  border: 3px solid #ADE5AE;
-  border-radius: 10px;
-  margin: 20px;
-  padding: 20px !important;
-  text-align: center;
-  vertical-align: center;
+  width: 300px;
+  /*background-color: #FFFFFF;*/
+  margin: 0 auto;
+  background-color: #EEFCE1;
+  border: 3px solid #5BCC5D;
+  color: #5BCC5D;
+  border-radius: 100px;
+  font-size: 18px;
+  /*margin-top: 20px;*/
+  /*padding: 20px 0;*/
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin: 20px auto;
 }
 .no-edition-found {
+  text-align: center;
   padding-top: 20px;
   font-size: 18px;
   color: #959595;
@@ -31,13 +39,13 @@
   margin: 10px 0 0 0;
 }
 .create-edition-button {
-  border: 3px solid #61C55D;
+  border: 3px solid #5BCC5D;
   border-radius: 100px;
   font-size: 18px;
   color: #5BCC5D;
   background-color: #EEFCE1;
   padding: 10px;
   margin: 40px 20px;
-  width: 60%;
+  width: 260px;
   cursor: pointer;
 }

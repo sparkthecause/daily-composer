@@ -3,14 +3,18 @@ import createBlurbIcon from '../assets/icon-add-color.svg';
 
 const CreateBlurbButton = ({ onCreateBlurb }) => {
   return(
-    <div
+    <button
       className="create-blurb-button"
       onClick={onCreateBlurb} >
       <img
         src={createBlurbIcon}
-        alt="Create New Blurb" />
-    </div>
+        alt="create blurb" />
+    </button>
   );
+};
+
+CreateBlurbButton.propTypes = {
+  onCreateBlurb: React.PropTypes.func.isRequired,
 };
 
 export default CreateBlurbButton;
