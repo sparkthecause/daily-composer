@@ -8,7 +8,8 @@ const CreateBlurbButton = ({ onCreateBlurb }) => {
       onClick={onCreateBlurb} >
       <img
         src={createBlurbIcon}
-        alt="create blurb" />
+        alt="add blurb" />
+      <p>add blurb</p>
     </button>
   );
 };
