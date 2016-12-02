@@ -10,6 +10,14 @@ import AddBlurbButton from '../components/AddBlurbButton';
 
 class Edition extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAddingBlurb: false,
+      selectedBlurbType: null
+    };
+  }
+
   approveEdition = () => {
     const { approveEdition, data: { edition: { id } } } = this.props;
     approveEdition(id);
@@ -20,9 +28,26 @@ class Edition extends React.Component {
     createEdition(publishDate);
   }
 
+  addBlurb = () => {
+    this.setState({
+      isAddingBlurb: true
+    });
+  }
+
+  blurbTypeSelected = (event) => {
+    console.log(event);
+    this.setState({
+      selectedBlurbType: event.target.value
+    });
+  }
+
   createBlurb = () => {
     const { createBlurb, data: { edition: { id } } } = this.props;
-    createBlurb(id);
+    createBlurb(id, this.state.selectedBlurbType);
+    this.setState({
+      isAddingBlurb: false,
+      selectedBlurbType: null
+    });
   }
 
   showInfoPanel = () => {
@@ -93,7 +118,11 @@ class Edition extends React.Component {
           publishDate={formattedPublishDate} />
         <Blurbs
           blurbs={edition.blurbs} />
-        <AddBlurbButton onCreateBlurb={this.createBlurb} />
+        <AddBlurbButton
+          isAddingBlurb={this.state.isAddingBlurb}
+          onAddBlurb={this.addBlurb}
+          onBlurbTypeSelected={this.blurbTypeSelected}
+          onCreateBlurb={this.createBlurb} />
       </div>
     );
 
@@ -190,8 +219,8 @@ export default compose(
   }),
   graphql(CREATE_BLURB_MUTATION, {
     props: ({ mutate }) => ({
-      createBlurb: (editionId) => mutate({
-        variables: { editionId, type: 'paragraph' },
+      createBlurb: (editionId, type) => mutate({
+        variables: { editionId, type },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const newBlurb = mutationResult.data.createBlurb;
