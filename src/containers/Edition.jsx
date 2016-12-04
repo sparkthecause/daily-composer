@@ -8,13 +8,30 @@ import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
 
+const defaultDataForBlurbType = (blurbType) => {
+  switch (blurbType) {
+    case 'title':
+      return { text: 'Title' };
+    case 'paragraph':
+      return { text: 'Paragraph' };
+    case 'unsubscribe':
+      return { href: '' };
+    case 'header':
+      return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
+    case 'share':
+      return { sms: { img: { src: '' }, href: '' }, email: { img: { src: '' }, href: '' } };
+    default:
+      return null;
+  }
+};
+
 class Edition extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       isAddingBlurb: false,
-      selectedBlurbType: null
+      selectedBlurbType: ''
     };
   }
 
@@ -25,7 +42,8 @@ class Edition extends React.Component {
 
   createEdition = () => {
     const { createEdition, params: { publishDate } } = this.props;
-    createEdition(publishDate);
+    const defaultCssHref = 'https://s3.amazonaws.com/cdn.sparkthecause.com/daily/styles/email.css';
+    createEdition(publishDate, defaultCssHref);
   }
 
   addBlurb = () => {
@@ -35,19 +53,22 @@ class Edition extends React.Component {
   }
 
   blurbTypeSelected = (event) => {
-    console.log(event);
-    this.setState({
-      selectedBlurbType: event.target.value
-    });
+    const selectedBlurbType = event.target.value;
+    this.setState({ selectedBlurbType });
+    if (selectedBlurbType) {
+      const { createBlurb, data: { edition: { id } } } = this.props;
+      const defaultData = defaultDataForBlurbType(selectedBlurbType);
+      console.log(id, selectedBlurbType, defaultData);
+      createBlurb(id, selectedBlurbType, defaultData);
+      this.setState({
+        isAddingBlurb: false,
+        selectedBlurbType: ''
+      });
+    }
   }
 
   createBlurb = () => {
-    const { createBlurb, data: { edition: { id } } } = this.props;
-    createBlurb(id, this.state.selectedBlurbType);
-    this.setState({
-      isAddingBlurb: false,
-      selectedBlurbType: null
-    });
+
   }
 
   showInfoPanel = () => {
@@ -122,7 +143,7 @@ class Edition extends React.Component {
           isAddingBlurb={this.state.isAddingBlurb}
           onAddBlurb={this.addBlurb}
           onBlurbTypeSelected={this.blurbTypeSelected}
-          onCreateBlurb={this.createBlurb} />
+          selectedBlurbType={this.state.selectedBlurbType} />
       </div>
     );
 
@@ -149,8 +170,8 @@ const APPROVE_EDITION_MUTATION = gql`
   }`;
 
 const CREATE_EDITION_MUTATION = gql`
-  mutation createEdition($publishDate: Date!) {
-    createEdition(publishDate: $publishDate) {
+  mutation createEdition($publishDate: Date!, $cssHref: String) {
+    createEdition(publishDate: $publishDate, cssHref: $cssHref) {
       id
       approvedAt
       publishOn (format: "YYYY-MM-DD")
@@ -164,8 +185,8 @@ const CREATE_EDITION_MUTATION = gql`
   }`;
 
 const CREATE_BLURB_MUTATION = gql`
-  mutation createBlurb($type: String!, $editionId: ID) {
-    createBlurb(type: $type, editionId: $editionId) {
+  mutation createBlurb($type: String!, $editionId: ID, $data: JSON) {
+    createBlurb(type: $type, editionId: $editionId, data: $data) {
       id
       type
       data
@@ -202,8 +223,8 @@ export default compose(
   }),
   graphql(CREATE_EDITION_MUTATION, {
     props: ({ mutate }) => ({
-      createEdition: (publishDate) => mutate({
-        variables: { publishDate },
+      createEdition: (publishDate, cssHref) => mutate({
+        variables: { publishDate, cssHref },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const newEdition = mutationResult.data.createEdition;
@@ -219,8 +240,8 @@ export default compose(
   }),
   graphql(CREATE_BLURB_MUTATION, {
     props: ({ mutate }) => ({
-      createBlurb: (editionId, type) => mutate({
-        variables: { editionId, type },
+      createBlurb: (editionId, type, data) => mutate({
+        variables: { editionId, type, data },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const newBlurb = mutationResult.data.createBlurb;

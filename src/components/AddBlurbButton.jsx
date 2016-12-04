@@ -1,7 +1,7 @@
 import React from 'react';
 import createBlurbIcon from '../assets/icon-add-color.svg';
 
-const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, onCreateBlurb }) => {
+const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, selectedBlurbType }) => {
 
   const addBlurbButton = (
     <button
@@ -17,13 +17,15 @@ const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, onC
   const createBlurbButton = (
     <div
       className="create-blurb-button">
-      <select onChange={onBlurbTypeSelected}>
+      <select value={selectedBlurbType} onChange={onBlurbTypeSelected}>
+        <option value="">Select</option>
         <option value="title">Title</option>
         <option value="paragraph">Paragraph</option>
         <option value="divider">Divider</option>
         <option value="share">Share</option>
+        <option value="header">Header</option>
+        <option value="unsubscribe">Unsubscribe</option>
       </select>
-      <button onClick={onCreateBlurb}>Done</button>
     </div>
   );
 
@@ -31,7 +33,9 @@ const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, onC
 };
 
 CreateBlurbButton.propTypes = {
-  onCreateBlurb: React.PropTypes.func.isRequired,
+  isAddingBlurb: React.PropTypes.bool.isRequired,
+  onAddBlurb: React.PropTypes.func.isRequired,
+  onBlurbTypeSelected: React.PropTypes.func.isRequired
 };
 
 export default CreateBlurbButton;
