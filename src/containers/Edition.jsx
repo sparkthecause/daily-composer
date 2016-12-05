@@ -56,10 +56,10 @@ class Edition extends React.Component {
     const selectedBlurbType = event.target.value;
     this.setState({ selectedBlurbType });
     if (selectedBlurbType) {
-      const { createBlurb, data: { edition: { id } } } = this.props;
+      const { createBlurb, data: { edition: { id, blurbs } } } = this.props;
       const defaultData = defaultDataForBlurbType(selectedBlurbType);
-      console.log(id, selectedBlurbType, defaultData);
-      createBlurb(id, selectedBlurbType, defaultData);
+      const position = blurbs && blurbs.length;
+      createBlurb(id, selectedBlurbType, defaultData, position);
       this.setState({
         isAddingBlurb: false,
         selectedBlurbType: ''
@@ -180,16 +180,18 @@ const CREATE_EDITION_MUTATION = gql`
         id
         type
         data
+        position
       }
     }
   }`;
 
 const CREATE_BLURB_MUTATION = gql`
-  mutation createBlurb($type: String!, $editionId: ID, $data: JSON) {
-    createBlurb(type: $type, editionId: $editionId, data: $data) {
+  mutation createBlurb($type: String!, $editionId: ID, $data: JSON, $position: Int) {
+    createBlurb(type: $type, editionId: $editionId, data: $data, position: $position) {
       id
       type
       data
+      position
     }
   }`;
 
@@ -204,6 +206,7 @@ const EDITION_QUERY = gql`
         id
         type
         data
+        position
       }
     }
   }`;
@@ -240,8 +243,8 @@ export default compose(
   }),
   graphql(CREATE_BLURB_MUTATION, {
     props: ({ mutate }) => ({
-      createBlurb: (editionId, type, data) => mutate({
-        variables: { editionId, type, data },
+      createBlurb: (editionId, type, data, position) => mutate({
+        variables: { editionId, type, data, position },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const newBlurb = mutationResult.data.createBlurb;

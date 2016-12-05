@@ -10,7 +10,7 @@ const blurbDomForData = (id, type, data) => {
 const Blurbs = ({ blurbs }) => {
   return(
     <div className="blurbs">
-      {blurbs.map(({ data, id, type }) => blurbDomForData(id, type, data))}
+      {blurbs.sort((a, b) => a.position > b.position).map(({ data, id, type }) => blurbDomForData(id, type, data))}
     </div>
   );
 };
