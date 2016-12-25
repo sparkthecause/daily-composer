@@ -32,7 +32,8 @@ class Edition extends React.Component {
     this.state = {
       isAddingBlurb: false,
       selectedBlurbType: '',
-      editingBlurbId: null
+      editingBlurbId: null,
+      showMenuForBlurbId: null
     };
   }
 
@@ -76,13 +77,21 @@ class Edition extends React.Component {
     this.setState({ editingBlurbId: id });
   }
 
+  showMenuForBlurb = (id) => {
+    this.setState({ showMenuForBlurbId: id });
+  }
+
+  hideMenuForBlurbs = () => {
+    this.setState({ showMenuForBlurbId: null });
+  }
+
   showInfoPanel = () => {
     alert("info");
   }
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
-    const { editingBlurbId, isAddingBlurb, selectedBlurbType } = this.state;
+    const { editingBlurbId, isAddingBlurb, selectedBlurbType, showMenuForBlurbId } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -131,7 +140,8 @@ class Edition extends React.Component {
     }
 
     const setIsEditing = (blurb) => (blurb && blurb.id === editingBlurbId) ? { ...blurb , isEditing: true } : blurb;
-    const blurbs = edition.blurbs.map(setIsEditing);
+    const setIsMenuVisible = (blurb) => (blurb && blurb.id === showMenuForBlurbId) ? { ...blurb , isMenuVisible: true } : blurb;
+    const blurbs = edition.blurbs.map(setIsEditing).map(setIsMenuVisible);
 
     return(
       <div>
@@ -148,7 +158,9 @@ class Edition extends React.Component {
           publishDate={formattedPublishDate} />
         <Blurbs
           blurbs={blurbs}
-          onEdit={this.editBlurb}/>
+          onEdit={this.editBlurb}
+          onShowMenu={this.showMenuForBlurb}
+          onHideMenu={this.hideMenuForBlurbs}/>
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
