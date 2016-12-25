@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 import update from 'react-addons-update';
 import Header from '../components/Header';
-import Blurbs from '../components/Blurbs';
+import Blurbs from '../components/BlurbWrapper';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
 
@@ -31,7 +31,8 @@ class Edition extends React.Component {
     super(props);
     this.state = {
       isAddingBlurb: false,
-      selectedBlurbType: ''
+      selectedBlurbType: '',
+      editingBlurbId: null
     };
   }
 
@@ -71,12 +72,17 @@ class Edition extends React.Component {
 
   }
 
+  editBlurb = (id) => {
+    this.setState({ editingBlurbId: id });
+  }
+
   showInfoPanel = () => {
     alert("info");
   }
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
+    const { editingBlurbId, isAddingBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -124,6 +130,9 @@ class Edition extends React.Component {
 
     }
 
+    const setIsEditing = (blurb) => (blurb && blurb.id === editingBlurbId) ? { ...blurb , isEditing: true } : blurb;
+    const blurbs = edition.blurbs.map(setIsEditing);
+
     return(
       <div>
         <link
@@ -138,12 +147,13 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={edition.blurbs} />
+          blurbs={blurbs}
+          onEdit={this.editBlurb}/>
         <AddBlurbButton
-          isAddingBlurb={this.state.isAddingBlurb}
+          isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
           onBlurbTypeSelected={this.blurbTypeSelected}
-          selectedBlurbType={this.state.selectedBlurbType} />
+          selectedBlurbType={selectedBlurbType} />
       </div>
     );
 

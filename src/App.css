@@ -52,3 +52,7 @@
   width: 260px;
   cursor: pointer;
 }
+
+.blurb:hover {
+  background-color: rgba(142,89,205,0.10);
+}
