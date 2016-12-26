@@ -1,3 +1,6 @@
+button:focus {
+  outline: 0;
+}
 .container {
   width: 100%;
   padding-top: 30px;
@@ -53,8 +56,40 @@
   cursor: pointer;
 }
 .blurb:hover {
-  background-color: rgba(142,89,205,0.10);
+  background-color: rgba(142,89,205,0.07);
 }
 .blurbWrapper {
-  /*padding: 0 !important;*/
+  position: relative;
+}
+.blurbMenu {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  z-index: 1;
+  position: absolute;
+  left: 300px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.blurbMenu button {
+  padding: 0 0 0 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  line-height: normal;
+  overflow: visible;
+}
+.blurbMenu button img {
+  width: 26px;
+  height: 26px;
+}
+.purpleLine {
+  width: 3px;
+  height: auto;
+  background: #8E59CD;
+  min-height: 26px;
+}
+.menuSpacer {
+  height: 1px;
+  width: 150px;
 }

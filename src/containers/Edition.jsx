@@ -77,12 +77,13 @@ class Edition extends React.Component {
     this.setState({ editingBlurbId: id });
   }
 
-  showMenuForBlurb = (id) => {
-    this.setState({ showMenuForBlurbId: id });
+  saveEditedBlurb = (id, data) => {
+    console.log(id, data);
+    this.setState({ editingBlurbId: null });
   }
 
-  hideMenuForBlurbs = () => {
-    this.setState({ showMenuForBlurbId: null });
+  showMenuForBlurb = (id) => {
+    this.setState({ showMenuForBlurbId: id });
   }
 
   showInfoPanel = () => {
@@ -159,8 +160,7 @@ class Edition extends React.Component {
         <Blurbs
           blurbs={blurbs}
           onEdit={this.editBlurb}
-          onShowMenu={this.showMenuForBlurb}
-          onHideMenu={this.hideMenuForBlurbs}/>
+          onShowMenu={this.showMenuForBlurb}/>
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
