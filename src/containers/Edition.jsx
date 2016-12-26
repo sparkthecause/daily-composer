@@ -83,7 +83,9 @@ class Edition extends React.Component {
   }
 
   showMenuForBlurb = (id) => {
-    this.setState({ showMenuForBlurbId: id });
+    this.setState((prevState, props) => ({
+      showMenuForBlurbId: prevState.editingBlurbId ?  prevState.showMenuForBlurbId : id
+    }));
   }
 
   showInfoPanel = () => {

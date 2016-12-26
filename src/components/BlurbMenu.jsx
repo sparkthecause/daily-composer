@@ -4,7 +4,7 @@ import editIcon from '../assets/icon-pencil-color.svg';
 import doneIcon from '../assets/icon-checkmark-color.svg';
 import repositionIcon from '../assets/icon-reorder-color.svg';
 
-const BlurbMenu = ({id, isEditing, onEdit, onSaveEdit }) => {
+const BlurbMenu = ({id, isEditing, onDelete, onEdit, onReposition, onSaveEdit }) => {
   return(
     <div
     className={'blurbMenu'}>
@@ -12,33 +12,22 @@ const BlurbMenu = ({id, isEditing, onEdit, onSaveEdit }) => {
       {!isEditing && (
         <button
           onClick={() => onEdit(id)}>
-          <img
-            src={editIcon}
-            alt="✏️" />
+          <img src={editIcon} alt="✏️" />
         </button>
       )}
       {isEditing && (
-        <button
-          onClick={onSaveEdit}>
-          <img
-            src={doneIcon}
-            alt="✏️" />
+        <button onClick={onSaveEdit}>
+          <img src={doneIcon} alt="✏️" />
         </button>
       )}
       {!isEditing && (
-        <button
-          disabled={isEditing}>
-          <img
-            src={repositionIcon}
-            disabled={isEditing}
-            alt="↕️" />
+        <button onClick={() => onReposition(id)}>
+          <img src={repositionIcon} alt="↕️" />
         </button>
       )}
       {!isEditing && (
-        <button>
-          <img
-            src={deleteIcon}
-            alt="🗑" />
+        <button onClick={() => onDelete(id)}>
+          <img src={deleteIcon} alt="🗑" />
         </button>
       )}
     </div>
