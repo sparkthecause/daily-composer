@@ -162,6 +162,7 @@ class Edition extends React.Component {
         <Blurbs
           blurbs={blurbs}
           onEdit={this.editBlurb}
+          onSaveEdit={this.saveEditedBlurb}
           onShowMenu={this.showMenuForBlurb}/>
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
