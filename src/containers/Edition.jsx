@@ -6,8 +6,39 @@ import update from 'react-addons-update';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
+import AddBlurbButton from '../components/AddBlurbButton';
+
+const defaultDataForBlurbType = (blurbType) => {
+  switch (blurbType) {
+    case 'title':
+      return { text: 'Title' };
+    case 'paragraph':
+      return { text: 'Paragraph' };
+    case 'unsubscribe':
+      return { href: '' };
+    case 'header':
+      return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
+    case 'share':
+      return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
+    default:
+      return null;
+  }
+};
 
 class Edition extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeBlurbId: null,
+      isAddingBlurb: false,
+      isDeletingBlurb: false,
+      isEditingBlurb: false,
+      isMenuVisible: false,
+      isRepositioningBlurb: false,
+      selectedBlurbType: ''
+    };
+  }
 
   approveEdition = () => {
     const { approveEdition, data: { edition: { id } } } = this.props;
@@ -16,7 +47,68 @@ class Edition extends React.Component {
 
   createEdition = () => {
     const { createEdition, params: { publishDate } } = this.props;
-    createEdition(publishDate);
+    const defaultCssHref = 'https://s3.amazonaws.com/cdn.sparkthecause.com/daily/styles/email.css';
+    createEdition(publishDate, defaultCssHref);
+  }
+
+  addBlurb = () => {
+    this.setState({
+      isAddingBlurb: true
+    });
+  }
+
+  blurbTypeSelected = (event) => {
+    const selectedBlurbType = event.target.value;
+    this.setState({ selectedBlurbType });
+    if (selectedBlurbType) {
+      const { createBlurb, data: { edition: { id, blurbs } } } = this.props;
+      const defaultData = defaultDataForBlurbType(selectedBlurbType);
+      const position = blurbs && blurbs.length;
+      createBlurb(id, selectedBlurbType, defaultData, position);
+      this.setState({
+        isAddingBlurb: false,
+        selectedBlurbType: ''
+      });
+    }
+  }
+
+  createBlurb = () => {
+
+  }
+
+  deleteBlurb = (id) => {
+
+  }
+
+  editBlurb = (id) => {
+    this.setState({
+      activeBlurbId: id,
+      isEditingBlurb: true
+    });
+  }
+
+  saveBlurb = (data) => {
+    // TODO: save changes to activeBlurbId
+    this.setState({
+      activeBlurbId: null,
+      isEditingBlurb: false,
+      isDeletingBlurb: false,
+      isRepositioningBlurb: false
+    });
+  }
+
+  repositionBlurb = (id) => {
+    this.setState({
+      activeBlurbId: id,
+      isRepositioningBlurb: true
+    });
+  }
+
+  showMenuForBlurb = (id) => {
+    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb, isRepositioningBlurb }, props) => ({
+      activeBlurbId: (isDeletingBlurb || isEditingBlurb || isRepositioningBlurb) ?  activeBlurbId : id,
+      isMenuVisible: true
+    }));
   }
 
   showInfoPanel = () => {
@@ -25,6 +117,7 @@ class Edition extends React.Component {
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
+    const { activeBlurbId, isAddingBlurb, isDeletingBlurb, isEditingBlurb, isMenuVisible, isRepositioningBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -72,6 +165,17 @@ class Edition extends React.Component {
 
     }
 
+    const setBlurbProps = (blurb) => {
+      return blurb && blurb.id === activeBlurbId ? {
+        ...blurb,
+        isEditable: Boolean(blurb.data),
+        isEditing: isEditingBlurb,
+        isDeleting: isDeletingBlurb,
+        isRepositioning: isRepositioningBlurb,
+        isMenuVisible: isMenuVisible
+      } : blurb;
+    };
+
     return(
       <div>
         <link
@@ -86,7 +190,17 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={edition.blurbs} />
+          blurbs={edition.blurbs.map(setBlurbProps)}
+          onDelete={this.deleteBlurb}
+          onEdit={this.editBlurb}
+          onReposition={this.repositionBlurb}
+          onSave={this.saveBlurb}
+          onShowMenu={this.showMenuForBlurb}/>
+        <AddBlurbButton
+          isAddingBlurb={isAddingBlurb}
+          onAddBlurb={this.addBlurb}
+          onBlurbTypeSelected={this.blurbTypeSelected}
+          selectedBlurbType={selectedBlurbType} />
       </div>
     );
 
@@ -96,6 +210,7 @@ class Edition extends React.Component {
 
 Edition.propTypes = {
   approveEdition: React.PropTypes.func.isRequired,
+  createBlurb: React.PropTypes.func.isRequired,
   createEdition: React.PropTypes.func.isRequired,
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool,
@@ -103,7 +218,7 @@ Edition.propTypes = {
   }).isRequired
 };
 
-const APPROVE_MUTATION = gql`
+const APPROVE_EDITION_MUTATION = gql`
   mutation approveEdition($editionId: ID!) {
     approveEdition(id: $editionId) {
       id
@@ -111,9 +226,9 @@ const APPROVE_MUTATION = gql`
     }
   }`;
 
-const CREATE_MUTATION = gql`
-  mutation createEdition($publishDate: Date!) {
-    createEdition(publishDate: $publishDate) {
+const CREATE_EDITION_MUTATION = gql`
+  mutation createEdition($publishDate: Date!, $cssHref: String) {
+    createEdition(publishDate: $publishDate, cssHref: $cssHref) {
       id
       approvedAt
       publishOn (format: "YYYY-MM-DD")
@@ -122,7 +237,18 @@ const CREATE_MUTATION = gql`
         id
         type
         data
+        position
       }
+    }
+  }`;
+
+const CREATE_BLURB_MUTATION = gql`
+  mutation createBlurb($type: String!, $editionId: ID, $data: JSON, $position: Int) {
+    createBlurb(type: $type, editionId: $editionId, data: $data, position: $position) {
+      id
+      type
+      data
+      position
     }
   }`;
 
@@ -137,6 +263,7 @@ const EDITION_QUERY = gql`
         id
         type
         data
+        position
       }
     }
   }`;
@@ -147,23 +274,42 @@ export default compose(
       variables: { publishDate }
     })
   }),
-  graphql(APPROVE_MUTATION, {
+  graphql(APPROVE_EDITION_MUTATION, {
     props: ({ mutate }) => ({
       approveEdition: (editionId) => mutate({
         variables: { editionId }
       })
     })
   }),
-  graphql(CREATE_MUTATION, {
+  graphql(CREATE_EDITION_MUTATION, {
     props: ({ mutate }) => ({
-      createEdition: (publishDate) => mutate({
-        variables: { publishDate },
+      createEdition: (publishDate, cssHref) => mutate({
+        variables: { publishDate, cssHref },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const newEdition = mutationResult.data.createEdition;
             return update(prev, {
               edition: {
                 $set: newEdition
+              }
+            });
+          }
+        }
+      })
+    })
+  }),
+  graphql(CREATE_BLURB_MUTATION, {
+    props: ({ mutate }) => ({
+      createBlurb: (editionId, type, data, position) => mutate({
+        variables: { editionId, type, data, position },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const newBlurb = mutationResult.data.createBlurb;
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $unshift: [newBlurb]
+                }
               }
             });
           }

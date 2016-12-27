@@ -35,7 +35,7 @@
     "react-router": "^2.8.1"
   },
   "devDependencies": {
-    "react-scripts": "0.6.1"
+    "react-scripts": "0.8.4"
   },
   "eslintConfig": {
     "extends": "react-app"

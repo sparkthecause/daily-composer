@@ -1,7 +1,12 @@
+a {
+  cursor: pointer;
+}
+button:focus {
+  outline: 0;
+}
 .container {
   width: 100%;
   padding-top: 30px;
-  text-align: center;
 }
 .header {
   width: 300px;
@@ -12,7 +17,29 @@
   justify-content: space-around;
   align-items: flex-start;
 }
+.create-blurb-button {
+  width: 300px;
+  /*background-color: #FFFFFF;*/
+  margin: 0 auto;
+  background-color: #EEFCE1;
+  border: 3px solid #5BCC5D;
+  color: #5BCC5D;
+  border-radius: 100px;
+  font-size: 18px;
+  /*margin-top: 20px;*/
+  /*padding: 20px 0;*/
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin: 20px auto;
+}
+.create-blurb-button * {
+  margin: 0 5px;
+}
 .no-edition-found {
+  text-align: center;
   padding-top: 20px;
   font-size: 18px;
   color: #959595;
@@ -21,13 +48,51 @@
   margin: 10px 0 0 0;
 }
 .create-edition-button {
-  border: 3px solid #61C55D;
+  border: 3px solid #5BCC5D;
   border-radius: 100px;
   font-size: 18px;
   color: #5BCC5D;
   background-color: #EEFCE1;
   padding: 10px;
   margin: 40px 20px;
-  width: 60%;
+  width: 260px;
   cursor: pointer;
+}
+.blurb:hover {
+  background-color: rgba(142,89,205,0.07);
+}
+.blurbWrapper {
+  position: relative;
+}
+.blurbMenu {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  z-index: 1;
+  position: absolute;
+  left: 300px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.blurbMenu button {
+  padding: 0 0 0 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  line-height: normal;
+  overflow: visible;
+}
+.blurbMenu button img {
+  width: 26px;
+  height: 26px;
+}
+.purpleLine {
+  width: 3px;
+  height: auto;
+  background: #8E59CD;
+  min-height: 26px;
+}
+.menuSpacer {
+  height: 1px;
+  width: 150px;
 }
