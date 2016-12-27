@@ -15,7 +15,7 @@ const blurbEditModeDomForData = (id, type, data) => {
   // return (Template) ? <Template key={id} {...data}/> : null;
 };
 
-const Blurbs = ({ blurbs, onEdit, onDelete, onReposition, onSave, onShowMenu }) => {
+const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onShowMenu }) => {
   const positionBlurbs = (a, b) => a.position > b.position;
   const blurbToDOM = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
     <div
@@ -30,6 +30,7 @@ const Blurbs = ({ blurbs, onEdit, onDelete, onReposition, onSave, onShowMenu }) 
           isEditing={isEditing}
           isDeleting={isDeleting}
           isRepositioning={isRepositioning}
+          onCancel={onCancel}
           onEdit={onEdit}
           onDelete={onDelete}
           onReposition={onReposition}

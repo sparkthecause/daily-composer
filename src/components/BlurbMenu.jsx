@@ -1,10 +1,10 @@
 import React from 'react';
-import deleteIcon from '../assets/icon-cancel-color.svg';
+import cancelIcon from '../assets/icon-cancel-color.svg';
 import editIcon from '../assets/icon-pencil-color.svg';
 import doneIcon from '../assets/icon-checkmark-color.svg';
 import repositionIcon from '../assets/icon-reorder-color.svg';
 
-const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onDelete, onEdit, onReposition, onSave }) => {
+const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onCancel, onDelete, onEdit, onReposition, onSave }) => {
   return(
     <div
     className={'blurbMenu'}>
@@ -15,9 +15,14 @@ const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onDe
           <img src={editIcon} alt="✏️" />
         </button>
       )}
-      {(isEditing || isDeleting || isRepositioning) && (
+      {isEditing && (
         <button onClick={onSave}>
           <img src={doneIcon} alt="✏️" />
+        </button>
+      )}
+      {isEditing && (
+        <button onClick={onCancel}>
+          <img src={cancelIcon} alt="X" />
         </button>
       )}
       {!isEditing && !isDeleting && !isRepositioning && (
@@ -27,7 +32,7 @@ const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onDe
       )}
       {!isEditing && !isDeleting && !isRepositioning && (
         <button onClick={() => onDelete(id)}>
-          <img src={deleteIcon} alt="🗑" />
+          <img src={cancelIcon} alt="🗑" />
         </button>
       )}
     </div>

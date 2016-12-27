@@ -80,6 +80,13 @@ class Edition extends React.Component {
 
   }
 
+  cancelEditBlurb = () => {
+    this.setState({
+      activeBlurbId: null,
+      isEditingBlurb: false
+    });
+  }
+
   editBlurb = (id) => {
     this.setState({
       activeBlurbId: id,
@@ -191,6 +198,7 @@ class Edition extends React.Component {
           publishDate={formattedPublishDate} />
         <Blurbs
           blurbs={edition.blurbs.map(setBlurbProps)}
+          onCancel={this.cancelEditBlurb}
           onDelete={this.deleteBlurb}
           onEdit={this.editBlurb}
           onReposition={this.repositionBlurb}
