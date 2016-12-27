@@ -15,15 +15,26 @@ const blurbEditModeDomForData = (id, type, data) => {
   // return (Template) ? <Template key={id} {...data}/> : null;
 };
 
-const Blurbs = ({ blurbs, onEdit, onSaveEdit, onShowMenu }) => {
+const Blurbs = ({ blurbs, onEdit, onDelete, onReposition, onSave, onShowMenu }) => {
   const positionBlurbs = (a, b) => a.position > b.position;
-  const blurbToDOM = ({ data, id, type, position, isEditing, isMenuVisible }) => (
+  const blurbToDOM = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
     <div
       className='blurbWrapper'
       key={id}
       onMouseEnter={() => onShowMenu(id)}>
       {(isEditing) ? blurbEditModeDomForData(type, data) : blurbDomForData(type, data)}
-      {isMenuVisible && <BlurbMenu id={id} isEditing={isEditing} onEdit={onEdit} onSaveEdit={onSaveEdit}/>}
+      {isMenuVisible && (
+        <BlurbMenu
+          id={id}
+          isEditable={isEditable}
+          isEditing={isEditing}
+          isDeleting={isDeleting}
+          isRepositioning={isRepositioning}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onReposition={onReposition}
+          onSave={onSave}/>
+      )}
     </div>
   );
   return(

@@ -30,10 +30,13 @@ class Edition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeBlurbId: null,
       isAddingBlurb: false,
-      selectedBlurbType: '',
-      editingBlurbId: null,
-      showMenuForBlurbId: null
+      isDeletingBlurb: false,
+      isEditingBlurb: false,
+      isMenuVisible: false,
+      isRepositioningBlurb: false,
+      selectedBlurbType: ''
     };
   }
 
@@ -73,18 +76,38 @@ class Edition extends React.Component {
 
   }
 
-  editBlurb = (id) => {
-    this.setState({ editingBlurbId: id });
+  deleteBlurb = (id) => {
+
   }
 
-  saveEditedBlurb = (id, data) => {
-    console.log(id, data);
-    this.setState({ editingBlurbId: null });
+  editBlurb = (id) => {
+    this.setState({
+      activeBlurbId: id,
+      isEditingBlurb: true
+    });
+  }
+
+  saveBlurb = (data) => {
+    // TODO: save changes to activeBlurbId
+    this.setState({
+      activeBlurbId: null,
+      isEditingBlurb: false,
+      isDeletingBlurb: false,
+      isRepositioningBlurb: false
+    });
+  }
+
+  repositionBlurb = (id) => {
+    this.setState({
+      activeBlurbId: id,
+      isRepositioningBlurb: true
+    });
   }
 
   showMenuForBlurb = (id) => {
-    this.setState((prevState, props) => ({
-      showMenuForBlurbId: prevState.editingBlurbId ?  prevState.showMenuForBlurbId : id
+    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb, isRepositioningBlurb }, props) => ({
+      activeBlurbId: (isDeletingBlurb || isEditingBlurb || isRepositioningBlurb) ?  activeBlurbId : id,
+      isMenuVisible: true
     }));
   }
 
@@ -94,7 +117,7 @@ class Edition extends React.Component {
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
-    const { editingBlurbId, isAddingBlurb, selectedBlurbType, showMenuForBlurbId } = this.state;
+    const { activeBlurbId, isAddingBlurb, isDeletingBlurb, isEditingBlurb, isMenuVisible, isRepositioningBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -142,9 +165,16 @@ class Edition extends React.Component {
 
     }
 
-    const setIsEditing = (blurb) => (blurb && blurb.id === editingBlurbId) ? { ...blurb , isEditing: true } : blurb;
-    const setIsMenuVisible = (blurb) => (blurb && blurb.id === showMenuForBlurbId) ? { ...blurb , isMenuVisible: true } : blurb;
-    const blurbs = edition.blurbs.map(setIsEditing).map(setIsMenuVisible);
+    const setBlurbProps = (blurb) => {
+      return blurb && blurb.id === activeBlurbId ? {
+        ...blurb,
+        isEditable: Boolean(blurb.data),
+        isEditing: isEditingBlurb,
+        isDeleting: isDeletingBlurb,
+        isRepositioning: isRepositioningBlurb,
+        isMenuVisible: isMenuVisible
+      } : blurb;
+    };
 
     return(
       <div>
@@ -160,9 +190,11 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={blurbs}
+          blurbs={edition.blurbs.map(setBlurbProps)}
+          onDelete={this.deleteBlurb}
           onEdit={this.editBlurb}
-          onSaveEdit={this.saveEditedBlurb}
+          onReposition={this.repositionBlurb}
+          onSave={this.saveBlurb}
           onShowMenu={this.showMenuForBlurb}/>
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}

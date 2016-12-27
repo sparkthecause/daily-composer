@@ -4,28 +4,28 @@ import editIcon from '../assets/icon-pencil-color.svg';
 import doneIcon from '../assets/icon-checkmark-color.svg';
 import repositionIcon from '../assets/icon-reorder-color.svg';
 
-const BlurbMenu = ({id, isEditing, onDelete, onEdit, onReposition, onSaveEdit }) => {
+const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onDelete, onEdit, onReposition, onSave }) => {
   return(
     <div
     className={'blurbMenu'}>
       <div className='purpleLine'/>
-      {!isEditing && (
+      {isEditable && !isEditing && !isDeleting && !isRepositioning && (
         <button
           onClick={() => onEdit(id)}>
           <img src={editIcon} alt="✏️" />
         </button>
       )}
-      {isEditing && (
-        <button onClick={onSaveEdit}>
+      {(isEditing || isDeleting || isRepositioning) && (
+        <button onClick={onSave}>
           <img src={doneIcon} alt="✏️" />
         </button>
       )}
-      {!isEditing && (
+      {!isEditing && !isDeleting && !isRepositioning && (
         <button onClick={() => onReposition(id)}>
           <img src={repositionIcon} alt="↕️" />
         </button>
       )}
-      {!isEditing && (
+      {!isEditing && !isDeleting && !isRepositioning && (
         <button onClick={() => onDelete(id)}>
           <img src={deleteIcon} alt="🗑" />
         </button>
