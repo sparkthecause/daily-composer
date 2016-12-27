@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 import update from 'react-addons-update';
 import Header from '../components/Header';
-import Blurbs from '../components/BlurbWrapper';
+import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
 
