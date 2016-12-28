@@ -72,24 +72,23 @@ class Edition extends React.Component {
     }
   }
 
-  createBlurb = () => {
-
-  }
-
-  deleteBlurb = (id) => {
-
+  deleteBlurb = () => {
+    this.setState({
+      isDeletingBlurb: true
+    });
   }
 
   cancelEditBlurb = () => {
     this.setState({
       activeBlurbId: null,
-      isEditingBlurb: false
+      isEditingBlurb: false,
+      isDeletingBlurb: false,
+      isRepositioningBlurb: false
     });
   }
 
-  editBlurb = (id) => {
+  editBlurb = () => {
     this.setState({
-      activeBlurbId: id,
       isEditingBlurb: true
     });
   }
@@ -104,9 +103,8 @@ class Edition extends React.Component {
     });
   }
 
-  repositionBlurb = (id) => {
+  repositionBlurb = () => {
     this.setState({
-      activeBlurbId: id,
       isRepositioningBlurb: true
     });
   }

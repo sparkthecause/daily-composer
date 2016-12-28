@@ -1,38 +1,39 @@
 import React from 'react';
 import cancelIcon from '../assets/icon-cancel-color.svg';
+import removeIcon from '../assets/icon-cancel.svg';
 import editIcon from '../assets/icon-pencil-color.svg';
 import doneIcon from '../assets/icon-checkmark-color.svg';
 import repositionIcon from '../assets/icon-reorder-color.svg';
 
-const BlurbMenu = ({id, isEditable, isEditing, isDeleting, isRepositioning, onCancel, onDelete, onEdit, onReposition, onSave }) => {
+const BlurbMenu = ({isEditable, isEditing, isDeleting, isRepositioning, onCancel, onDelete, onEdit, onReposition, onSave }) => {
   return(
     <div
     className={'blurbMenu'}>
       <div className='purpleLine'/>
       {isEditable && !isEditing && !isDeleting && !isRepositioning && (
         <button
-          onClick={() => onEdit(id)}>
+          onClick={onEdit}>
           <img src={editIcon} alt="✏️" />
         </button>
       )}
-      {isEditing && (
-        <button onClick={onSave}>
-          <img src={doneIcon} alt="✏️" />
-        </button>
-      )}
-      {isEditing && (
-        <button onClick={onCancel}>
-          <img src={cancelIcon} alt="X" />
-        </button>
-      )}
       {!isEditing && !isDeleting && !isRepositioning && (
-        <button onClick={() => onReposition(id)}>
+        <button onClick={onReposition}>
           <img src={repositionIcon} alt="↕️" />
         </button>
       )}
       {!isEditing && !isDeleting && !isRepositioning && (
-        <button onClick={() => onDelete(id)}>
-          <img src={cancelIcon} alt="🗑" />
+        <button onClick={onDelete}>
+          <img src={removeIcon} alt="🗑" />
+        </button>
+      )}
+      {(isEditing || isDeleting) && (
+        <button onClick={onSave}>
+          <img src={doneIcon} alt="✏️" />
+        </button>
+      )}
+      {(isEditing || isDeleting) && (
+        <button onClick={onCancel}>
+          <img src={cancelIcon} alt="X" />
         </button>
       )}
     </div>

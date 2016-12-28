@@ -58,11 +58,14 @@ button:focus {
   width: 260px;
   cursor: pointer;
 }
-.blurb:hover {
-  background-color: rgba(142,89,205,0.07);
-}
 .blurbWrapper {
   position: relative;
+}
+.blurbWrapper.active {
+  background-color: rgba(142,89,205,0.07);
+}
+.blurbWrapper.deleting {
+  background-color: rgba(240,98,90,0.25);
 }
 .blurbMenu {
   display: inline-flex;

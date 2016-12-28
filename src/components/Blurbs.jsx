@@ -19,7 +19,7 @@ const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onSh
   const positionBlurbs = (a, b) => a.position > b.position;
   const blurbToDOM = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
     <div
-      className='blurbWrapper'
+      className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}
       key={id}
       onMouseEnter={() => onShowMenu(id)}>
       {(isEditing) ? blurbEditModeDomForData(type, data) : blurbDomForData(type, data)}
