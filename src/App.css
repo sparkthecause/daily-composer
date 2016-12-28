@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 a {
   cursor: pointer;
 }
@@ -19,15 +23,12 @@ button:focus {
 }
 .create-blurb-button {
   width: 300px;
-  /*background-color: #FFFFFF;*/
   margin: 0 auto;
   background-color: #EEFCE1;
   border: 3px solid #5BCC5D;
   color: #5BCC5D;
   border-radius: 100px;
   font-size: 18px;
-  /*margin-top: 20px;*/
-  /*padding: 20px 0;*/
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -88,6 +89,9 @@ button:focus {
 .blurbMenu button img {
   width: 26px;
   height: 26px;
+}
+.blurb {
+  margin: 10px 0;
 }
 .purpleLine {
   width: 3px;

@@ -1,6 +1,6 @@
 import React from 'react';
 import cancelIcon from '../assets/icon-cancel-color.svg';
-import removeIcon from '../assets/icon-cancel.svg';
+import removeIcon from '../assets/icon-remove-color.svg';
 import editIcon from '../assets/icon-pencil-color.svg';
 import doneIcon from '../assets/icon-checkmark-color.svg';
 import repositionIcon from '../assets/icon-reorder-color.svg';
