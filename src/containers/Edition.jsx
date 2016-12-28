@@ -78,7 +78,7 @@ class Edition extends React.Component {
     });
   }
 
-  cancelEditBlurb = () => {
+  cancelBlurb = () => {
     this.setState({
       activeBlurbId: null,
       isEditingBlurb: false,
@@ -94,7 +94,26 @@ class Edition extends React.Component {
   }
 
   saveBlurb = (data) => {
-    // TODO: save changes to activeBlurbId
+
+    const { activeBlurbId, isEditingBlurb, isDeletingBlurb, isRepositioningBlurb } = this.state;
+    const { removeBlurb } = this.props;
+
+    if (activeBlurbId) {
+
+      if (isEditingBlurb) {
+
+      }
+
+      if (isDeletingBlurb) {
+        removeBlurb(activeBlurbId);
+      }
+
+      if (isRepositioningBlurb) {
+
+      }
+
+    }
+
     this.setState({
       activeBlurbId: null,
       isEditingBlurb: false,
@@ -196,7 +215,7 @@ class Edition extends React.Component {
           publishDate={formattedPublishDate} />
         <Blurbs
           blurbs={edition.blurbs.map(setBlurbProps)}
-          onCancel={this.cancelEditBlurb}
+          onCancel={this.cancelBlurb}
           onDelete={this.deleteBlurb}
           onEdit={this.editBlurb}
           onReposition={this.repositionBlurb}
@@ -255,6 +274,13 @@ const CREATE_BLURB_MUTATION = gql`
       type
       data
       position
+    }
+  }`;
+
+const REMOVE_BLURB_MUTATION = gql`
+  mutation removeBlurb($id: ID!) {
+    removeBlurbFromEdition(id: $id) {
+      id
     }
   }`;
 
@@ -322,5 +348,24 @@ export default compose(
         }
       })
     })
-  })
+  }),
+  graphql(REMOVE_BLURB_MUTATION, {
+    props: ({ mutate }) => ({
+      removeBlurb: (id) => mutate({
+        variables: { id },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $splice: [[index, 1]]
+                }
+              }
+            });
+          }
+        }
+      })
+    })
+  }),
 )(Edition);
