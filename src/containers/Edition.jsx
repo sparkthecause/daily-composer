@@ -19,7 +19,7 @@ const defaultDataForBlurbType = (blurbType) => {
     case 'header':
       return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
     case 'share':
-      return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
+      return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_text.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
     default:
       return null;
   }
