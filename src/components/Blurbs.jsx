@@ -16,7 +16,6 @@ const blurbEditModeDomForData = (id, type, data) => {
 };
 
 const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onShowMenu }) => {
-  const positionBlurbs = (a, b) => a.position > b.position;
   const blurbToDOM = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
     <div
       className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}
@@ -40,7 +39,7 @@ const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onSh
   );
   return(
     <div className="blurbs">
-      {blurbs.sort(positionBlurbs).map(blurbToDOM)}
+      {blurbs.map(blurbToDOM)}
     </div>
   );
 };

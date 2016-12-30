@@ -25,6 +25,8 @@ const defaultDataForBlurbType = (blurbType) => {
   }
 };
 
+const sortByPosition = (a, b) => a.position - b.position;
+
 class Edition extends React.Component {
 
   constructor(props) {
@@ -64,6 +66,7 @@ class Edition extends React.Component {
       const { createBlurb, data: { edition: { id, blurbs } } } = this.props;
       const defaultData = defaultDataForBlurbType(selectedBlurbType);
       const position = blurbs && blurbs.length;
+      console.log(blurbs, position)
       createBlurb(id, selectedBlurbType, defaultData, position);
       this.setState({
         isAddingBlurb: false,
@@ -200,6 +203,9 @@ class Edition extends React.Component {
       } : blurb;
     };
 
+    const blurbs = edition.blurbs.map(setBlurbProps).sort(sortByPosition);
+    console.log(blurbs.map(b => b.position))
+
     return(
       <div>
         <link
@@ -214,7 +220,7 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={edition.blurbs.map(setBlurbProps)}
+          blurbs={blurbs}
           onCancel={this.cancelBlurb}
           onDelete={this.deleteBlurb}
           onEdit={this.editBlurb}
