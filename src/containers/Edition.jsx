@@ -3,9 +3,8 @@ import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
-import { arrayMove } from 'react-sortable-hoc';
 import Header from '../components/Header';
-import Blurbs from '../components/Blurbs';
+import Blurbs from '../containers/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
 
@@ -26,19 +25,12 @@ const defaultDataForBlurbType = (blurbType) => {
   }
 };
 
-const sortByPosition = (a, b) => a.position - b.position;
-
 class Edition extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      activeBlurbId: null,
       isAddingBlurb: false,
-      isDeletingBlurb: false,
-      isEditingBlurb: false,
-      isMenuVisible: false,
-      isRepositioningBlurb: false,
       selectedBlurbType: ''
     };
   }
@@ -75,87 +67,13 @@ class Edition extends React.Component {
     }
   }
 
-  deleteBlurb = () => {
-    this.setState({
-      isDeletingBlurb: true
-    });
-  }
-
-  cancelBlurb = () => {
-    this.setState({
-      activeBlurbId: null,
-      isEditingBlurb: false,
-      isDeletingBlurb: false,
-      isRepositioningBlurb: false
-    });
-  }
-
-  editBlurb = () => {
-    this.setState({
-      isEditingBlurb: true
-    });
-  }
-
-  onRepositionEnd = ({oldIndex, newIndex}) => {
-    this.setState({
-      items: arrayMove(this.state.items, oldIndex, newIndex)
-    });
-  };
-
-  saveBlurb = (data) => {
-
-    const { activeBlurbId, isEditingBlurb, isDeletingBlurb, isRepositioningBlurb } = this.state;
-    const { removeBlurb } = this.props;
-
-    if (activeBlurbId) {
-
-      if (isEditingBlurb) {
-
-      }
-
-      if (isDeletingBlurb) {
-        removeBlurb(activeBlurbId);
-      }
-
-      if (isRepositioningBlurb) {
-        // this.setBlurbPostitions();
-        // saveBlurbPositions();
-      }
-
-    }
-
-    this.setState({
-      activeBlurbId: null,
-      isEditingBlurb: false,
-      isDeletingBlurb: false,
-      isRepositioningBlurb: false
-    });
-  }
-
-  repositionBlurb = () => {
-    this.setState({
-      isRepositioningBlurb: true
-    });
-  }
-
-  setBlurbPostitions = () => {
-
-  }
-
-  showMenuForBlurb = (id) => {
-    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb, isRepositioningBlurb }, props) => ({
-      activeBlurbId: (isDeletingBlurb || isEditingBlurb || isRepositioningBlurb) ?  activeBlurbId : id,
-      isMenuVisible: true
-    }));
-  }
-
   showInfoPanel = () => {
     alert("info");
   }
 
   render() {
-    const { data: { loading, edition, error }, params: { publishDate } } = this.props;
-    const { activeBlurbId, isAddingBlurb, isDeletingBlurb, isEditingBlurb, isMenuVisible, isRepositioningBlurb, selectedBlurbType } = this.state;
+    const { data: { loading, edition, error }, params: { publishDate }, removeBlurb } = this.props;
+    const { isAddingBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -203,18 +121,7 @@ class Edition extends React.Component {
 
     }
 
-    const setBlurbProps = (blurb) => {
-      return blurb && blurb.id === activeBlurbId ? {
-        ...blurb,
-        isEditable: Boolean(blurb.data),
-        isEditing: isEditingBlurb,
-        isDeleting: isDeletingBlurb,
-        isRepositioning: isRepositioningBlurb,
-        isMenuVisible: isMenuVisible
-      } : blurb;
-    };
-
-    const blurbs = edition.blurbs.map(setBlurbProps).sort(sortByPosition);
+    console.log(edition.blurbs.length);
 
     return(
       <div>
@@ -230,16 +137,8 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={blurbs}
-          onCancel={this.cancelBlurb}
-          onDelete={this.deleteBlurb}
-          onEdit={this.editBlurb}
-          onReposition={this.repositionBlurb}
-          onSave={this.saveBlurb}
-          onShowMenu={this.showMenuForBlurb}
-          useDragHandle={true}
-          onSortStart={this.repositionBlurb}
-          onSortEnd={this.onRepositionEnd} />
+          blurbs={edition.blurbs}
+          removeBlurb={removeBlurb} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
