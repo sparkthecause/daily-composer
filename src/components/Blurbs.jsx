@@ -1,5 +1,6 @@
 import React from 'react';
 import templates from 'daily-templates';
+// import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import BlurbMenu from './BlurbMenu';
 
 const blurbDomForData = (type, data) => {
@@ -16,11 +17,10 @@ const blurbEditModeDomForData = (id, type, data) => {
 };
 
 const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onShowMenu }) => {
-  const blurbToDOM = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
+  const BlurbWithMenu = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, type }) => (
     <div
-      className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}
-      key={id}
-      onMouseEnter={() => onShowMenu(id)}>
+      onMouseEnter={() => onShowMenu(id)}
+      className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}>
       {(isEditing) ? blurbEditModeDomForData(type, data) : blurbDomForData(type, data)}
       {isMenuVisible && (
         <BlurbMenu
@@ -37,9 +37,24 @@ const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onSh
       )}
     </div>
   );
+
   return(
     <div className="blurbs">
-      {blurbs.map(blurbToDOM)}
+      {blurbs.map(({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, position, type }) => (
+        <BlurbWithMenu
+          key={id}
+          index={position}
+
+          data={data}
+          id={id}
+          isEditable={isEditable}
+          isEditing={isEditing}
+          isDeleting={isDeleting}
+          isMenuVisible={isMenuVisible}
+          isRepositioning={isRepositioning}
+          type={type}/>
+        ))
+      }
     </div>
   );
 };
