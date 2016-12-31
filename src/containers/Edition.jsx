@@ -128,6 +128,7 @@ class Edition extends React.Component {
     this.setState({
       isRepositioningBlurb: true
     });
+    console.log(this.state);
   }
 
   showMenuForBlurb = (id) => {
@@ -224,7 +225,10 @@ class Edition extends React.Component {
           onEdit={this.editBlurb}
           onReposition={this.repositionBlurb}
           onSave={this.saveBlurb}
-          onShowMenu={this.showMenuForBlurb}/>
+          onShowMenu={this.showMenuForBlurb}
+          useDragHandle={true}
+          onSortStart={this.repositionBlurb}
+          onSortEnd={this.saveBlurb} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}

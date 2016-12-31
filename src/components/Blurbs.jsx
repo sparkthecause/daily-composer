@@ -1,6 +1,6 @@
 import React from 'react';
 import templates from 'daily-templates';
-// import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import BlurbMenu from './BlurbMenu';
 
 const blurbDomForData = (type, data) => {
@@ -16,8 +16,8 @@ const blurbEditModeDomForData = (id, type, data) => {
   // return (Template) ? <Template key={id} {...data}/> : null;
 };
 
-const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onShowMenu }) => {
-  const BlurbWithMenu = ({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, type }) => (
+const Blurbs = SortableContainer(({ blurbs, onCancel, onDelete, onEdit, onSave, onShowMenu }) => {
+  const BlurbWithMenu = SortableElement(({ data, id, isEditable, isEditing, isDeleting, isMenuVisible, isRepositioning, type }) => (
     <div
       onMouseEnter={() => onShowMenu(id)}
       className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}>
@@ -32,11 +32,10 @@ const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onSh
           onCancel={onCancel}
           onEdit={onEdit}
           onDelete={onDelete}
-          onReposition={onReposition}
           onSave={onSave}/>
       )}
     </div>
-  );
+  ));
 
   return(
     <div className="blurbs">
@@ -57,7 +56,7 @@ const Blurbs = ({ blurbs, onCancel, onDelete, onEdit, onReposition, onSave, onSh
       }
     </div>
   );
-};
+});
 
 Blurbs.propTypes = {
   blurbs: React.PropTypes.array.isRequired,
