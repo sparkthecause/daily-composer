@@ -1,8 +1,8 @@
 import React from 'react';
+import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
-import update from 'react-addons-update';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
@@ -66,7 +66,6 @@ class Edition extends React.Component {
       const { createBlurb, data: { edition: { id, blurbs } } } = this.props;
       const defaultData = defaultDataForBlurbType(selectedBlurbType);
       const position = blurbs && blurbs.length;
-      console.log(blurbs, position)
       createBlurb(id, selectedBlurbType, defaultData, position);
       this.setState({
         isAddingBlurb: false,
@@ -204,7 +203,6 @@ class Edition extends React.Component {
     };
 
     const blurbs = edition.blurbs.map(setBlurbProps).sort(sortByPosition);
-    console.log(blurbs.map(b => b.position))
 
     return(
       <div>
