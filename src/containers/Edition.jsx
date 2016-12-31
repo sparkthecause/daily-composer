@@ -72,7 +72,7 @@ class Edition extends React.Component {
   }
 
   render() {
-    const { data: { loading, edition, error }, params: { publishDate }, removeBlurb } = this.props;
+    const { data: { loading, edition, error }, params: { publishDate } } = this.props;
     const { isAddingBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
@@ -121,8 +121,6 @@ class Edition extends React.Component {
 
     }
 
-    console.log(edition.blurbs.length);
-
     return(
       <div>
         <link
@@ -136,9 +134,7 @@ class Edition extends React.Component {
           nextDate={nextDate}
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
-        <Blurbs
-          blurbs={edition.blurbs}
-          removeBlurb={removeBlurb} />
+        <Blurbs blurbs={edition.blurbs} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
@@ -192,13 +188,6 @@ const CREATE_BLURB_MUTATION = gql`
       type
       data
       position
-    }
-  }`;
-
-const REMOVE_BLURB_MUTATION = gql`
-  mutation removeBlurb($id: ID!) {
-    removeBlurbFromEdition(id: $id) {
-      id
     }
   }`;
 
@@ -266,24 +255,5 @@ export default compose(
         }
       })
     })
-  }),
-  graphql(REMOVE_BLURB_MUTATION, {
-    props: ({ mutate }) => ({
-      removeBlurb: (id) => mutate({
-        variables: { id },
-        updateQueries: {
-          currentEdition: (prev, { mutationResult }) => {
-            const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
-            return update(prev, {
-              edition: {
-                blurbs: {
-                  $splice: [[index, 1]]
-                }
-              }
-            });
-          }
-        }
-      })
-    })
-  }),
+  })
 )(Edition);

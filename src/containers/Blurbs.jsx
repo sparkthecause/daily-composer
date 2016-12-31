@@ -1,6 +1,9 @@
 import React from 'react';
+import update from 'react-addons-update';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 import templates from 'daily-templates';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import BlurbMenu from '../components/BlurbMenu';
 
 const blurbDomForData = (type, data) => {
@@ -29,14 +32,12 @@ class Blurbs extends React.Component {
       blurbs: blurbs && [ ...blurbs.sort(sortByPosition) ],
       isDeletingBlurb: false,
       isEditingBlurb: false,
-      isMenuVisible: false,
-      isRepositioningBlurb: false
+      isMenuVisible: false
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { blurbs } = nextProps;
-
     this.setState({
       blurbs: blurbs && [ ...blurbs.sort(sortByPosition) ],
     });
@@ -52,8 +53,7 @@ class Blurbs extends React.Component {
     this.setState({
       activeBlurbId: null,
       isEditingBlurb: false,
-      isDeletingBlurb: false,
-      isRepositioningBlurb: false
+      isDeletingBlurb: false
     });
   }
 
@@ -64,14 +64,15 @@ class Blurbs extends React.Component {
   }
 
   onRepositionEnd = ({oldIndex, newIndex}) => {
-    // this.setState({
-    //   items: arrayMove(this.state.items, oldIndex, newIndex)
-    // });
+    this.setState(({ blurbs }) => ({
+      blurbs: arrayMove(blurbs, oldIndex, newIndex)
+    }));
+    this.saveBlurbPostitions();
   };
 
   saveBlurb = (data) => {
 
-    const { activeBlurbId, isEditingBlurb, isDeletingBlurb, isRepositioningBlurb } = this.state;
+    const { activeBlurbId, isEditingBlurb, isDeletingBlurb } = this.state;
     const { removeBlurb } = this.props;
 
     if (activeBlurbId) {
@@ -84,34 +85,25 @@ class Blurbs extends React.Component {
         removeBlurb(activeBlurbId);
       }
 
-      if (isRepositioningBlurb) {
-        // this.setBlurbPostitions();
-        // saveBlurbPositions();
-      }
-
     }
 
     this.setState({
       activeBlurbId: null,
       isEditingBlurb: false,
-      isDeletingBlurb: false,
-      isRepositioningBlurb: false
+      isDeletingBlurb: false
     });
   }
 
-  repositionBlurb = () => {
-    this.setState({
-      isRepositioningBlurb: true
-    });
-  }
-
-  setBlurbPostitions = () => {
-
+  saveBlurbPostitions = () => {
+    this.setState(({ blurbs }) => ({
+      blurbs: blurbs.map((blurb, index) => ({ ...blurb, postition: index }))
+    }));
+    this.props.savePositions();
   }
 
   showMenuForBlurb = (id) => {
-    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb, isRepositioningBlurb }) => ({
-      activeBlurbId: (isDeletingBlurb || isEditingBlurb || isRepositioningBlurb) ?  activeBlurbId : id,
+    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb }) => ({
+      activeBlurbId: (isDeletingBlurb || isEditingBlurb) ?  activeBlurbId : id,
       isMenuVisible: true
     }));
   }
@@ -167,7 +159,6 @@ class Blurbs extends React.Component {
         isDeleting={isDeletingBlurb}
         isEditing={isEditingBlurb}
         isMenuVisible={isMenuVisible}
-        onSortStart={this.repositionBlurb}
         onSortEnd={this.onRepositionEnd}
         useDragHandle={true} />
     );
@@ -176,8 +167,62 @@ class Blurbs extends React.Component {
 
 }
 
+const REMOVE_BLURB_MUTATION = gql`
+mutation removeBlurb($id: ID!) {
+  removeBlurbFromEdition(id: $id) {
+    id
+  }
+}`;
+
+const SAVE_BLURB_POSITIONS_MUTATION = gql`
+mutation saveBlurbPostitions($blurbPositions: [BlurbPosition]) {
+  saveBlurbPostitions(blurbPositions: $blurbPositions) {
+    id
+    position
+  }
+}`;
+
 Blurbs.propTypes = {
   blurbs: React.PropTypes.array.isRequired,
 };
 
-export default Blurbs;
+export default compose(
+  graphql(REMOVE_BLURB_MUTATION, {
+    props: ({ mutate }) => ({
+      removeBlurb: (id) => mutate({
+        variables: { id },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $splice: [[index, 1]]
+                }
+              }
+            });
+          }
+        }
+      })
+    })
+  })
+  // graphql(SAVE_BLURB_POSITIONS_MUTATION, {
+  //   props: ({ mutate }) => ({
+  //     saveBlurbPostitions: (blurbPositions) => mutate({
+  //       variables: { blurbPositions },
+  //       updateQueries: {
+  //         currentEdition: (prev, { mutationResult }) => {
+  //           const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
+  //           return update(prev, {
+  //             edition: {
+  //               blurbs: {
+  //                 $splice: [[index, 1]]
+  //               }
+  //             }
+  //           });
+  //         }
+  //       }
+  //     })
+  //   })
+  // })
+)(Blurbs);
