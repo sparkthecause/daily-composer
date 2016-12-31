@@ -3,6 +3,7 @@ import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
+import { arrayMove } from 'react-sortable-hoc';
 import Header from '../components/Header';
 import Blurbs from '../components/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
@@ -95,6 +96,12 @@ class Edition extends React.Component {
     });
   }
 
+  onRepositionEnd = ({oldIndex, newIndex}) => {
+    this.setState({
+      items: arrayMove(this.state.items, oldIndex, newIndex)
+    });
+  };
+
   saveBlurb = (data) => {
 
     const { activeBlurbId, isEditingBlurb, isDeletingBlurb, isRepositioningBlurb } = this.state;
@@ -111,7 +118,8 @@ class Edition extends React.Component {
       }
 
       if (isRepositioningBlurb) {
-
+        // this.setBlurbPostitions();
+        // saveBlurbPositions();
       }
 
     }
@@ -128,7 +136,10 @@ class Edition extends React.Component {
     this.setState({
       isRepositioningBlurb: true
     });
-    console.log(this.state);
+  }
+
+  setBlurbPostitions = () => {
+
   }
 
   showMenuForBlurb = (id) => {
@@ -228,7 +239,7 @@ class Edition extends React.Component {
           onShowMenu={this.showMenuForBlurb}
           useDragHandle={true}
           onSortStart={this.repositionBlurb}
-          onSortEnd={this.saveBlurb} />
+          onSortEnd={this.onRepositionEnd} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
