@@ -6,6 +6,7 @@ import { SortableContainer, arrayMove } from 'react-sortable-hoc';
 import BlurbWithMenu from '../components/BlurbWithMenu';
 
 const sortByPosition = (a, b) => a.position - b.position;
+const reindexBlurbs = (blurb, index) => ({ ...blurb, position: index });
 
 const BlurbsContainer = SortableContainer(({ activeBlurbId, blurbs, isDeleting, isEditing, isMenuVisible, menuActions, showMenuForBlurb }) => (
   <div className="blurbs">
@@ -73,7 +74,7 @@ class Blurbs extends React.Component {
 
   onRepositionEnd = ({oldIndex, newIndex}) => {
     this.setState(({ blurbs }) => ({
-      blurbs: arrayMove(blurbs, oldIndex, newIndex).map((blurb, index) => ({ ...blurb, position: index }))
+      blurbs: arrayMove(blurbs, oldIndex, newIndex).map(reindexBlurbs)
     }));
     const { savePositions } = this.props;
     const newBlurbPositions = this.state.blurbs.map(({ id, position }) => ({ id, position }));
@@ -83,7 +84,7 @@ class Blurbs extends React.Component {
   saveBlurb = (data) => {
 
     const { activeBlurbId, isEditingBlurb, isDeletingBlurb } = this.state;
-    const { removeBlurb } = this.props;
+    const { editionId, removeBlurb } = this.props;
 
     if (activeBlurbId) {
 
@@ -92,7 +93,10 @@ class Blurbs extends React.Component {
       }
 
       if (isDeletingBlurb) {
-        removeBlurb(activeBlurbId);
+        this.setState(({ blurbs }) => ({
+          blurbs: blurbs.filter(({ id }) => id !== activeBlurbId).map(reindexBlurbs)
+        }));
+        removeBlurb(activeBlurbId, editionId);
       }
 
     }
@@ -139,9 +143,10 @@ class Blurbs extends React.Component {
 }
 
 const REMOVE_BLURB_MUTATION = gql`
-mutation removeBlurb($id: ID!) {
-  removeBlurbFromEdition(id: $id) {
+mutation removeBlurb($blurbId: ID!, $editionId: ID!) {
+  removeBlurbFromEdition(blurbId: $blurbId, editionId: $editionId) {
     id
+    position
   }
 }`;
 
@@ -155,20 +160,24 @@ mutation saveBlurbPostitions($blurbPositions: [BlurbPositionInput]) {
 
 Blurbs.propTypes = {
   blurbs: React.PropTypes.array.isRequired,
+  editionId: React.PropTypes.string.isRequired
 };
 
 export default compose(
   graphql(REMOVE_BLURB_MUTATION, {
     props: ({ mutate }) => ({
-      removeBlurb: (id) => mutate({
-        variables: { id },
+      removeBlurb: ( blurbId, editionId ) => mutate({
+        variables: { blurbId, editionId },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
-            const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
+            const newPositions = mutationResult.data.removeBlurbFromEdition;
             return update(prev, {
               edition: {
                 blurbs: {
-                  $splice: [[index, 1]]
+                  $set: prev.edition.blurbs.filter(({ id }) => id !== blurbId).map(blurb => {
+                    const { position } = newPositions.find(pos => pos.id === blurb.id) || {};
+                    return { ...blurb, position };
+                  })
                 }
               }
             });
@@ -179,7 +188,7 @@ export default compose(
   }),
   graphql(SAVE_BLURB_POSITIONS_MUTATION, {
     props: ({ mutate }) => ({
-      savePositions: (blurbPositions) => mutate({
+      savePositions: ( blurbPositions ) => mutate({
         variables: { blurbPositions },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {

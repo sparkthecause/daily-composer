@@ -134,7 +134,9 @@ class Edition extends React.Component {
           nextDate={nextDate}
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
-        <Blurbs blurbs={edition.blurbs} />
+        <Blurbs
+          blurbs={edition.blurbs}
+          editionId={edition.id} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
