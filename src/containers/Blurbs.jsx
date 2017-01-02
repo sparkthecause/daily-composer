@@ -2,24 +2,32 @@ import React from 'react';
 import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import templates from 'daily-templates';
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import BlurbMenu from '../components/BlurbMenu';
-
-const blurbDomForData = (type, data) => {
-  const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
-  const Template = templates[templateName];
-  return (Template) ? <Template {...data}/> : null;
-};
-
-const blurbEditModeDomForData = (id, type, data) => {
-  return <div>EDIT ME</div>;
-  // const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
-  // const Template = templates[templateName];
-  // return (Template) ? <Template key={id} {...data}/> : null;
-};
+import { SortableContainer, arrayMove } from 'react-sortable-hoc';
+import BlurbWithMenu from '../components/BlurbWithMenu';
 
 const sortByPosition = (a, b) => a.position - b.position;
+
+const BlurbsContainer = SortableContainer(({ activeBlurbId, blurbs, isDeleting, isEditing, isMenuVisible, menuActions, showMenuForBlurb }) => (
+  <div className="blurbs">
+    {blurbs.map(({ data, id, position, type }) => {
+      const isActiveBlurb = id === activeBlurbId;
+      return (
+        <BlurbWithMenu
+          data={data}
+          id={id}
+          index={position}
+          isEditable={Boolean(data)}
+          isEditing={isActiveBlurb && isEditing}
+          isDeleting={isActiveBlurb && isDeleting}
+          isMenuVisible={isActiveBlurb && isMenuVisible}
+          key={id}
+          menuActions={menuActions}
+          onShowMenuForBlurb={showMenuForBlurb}
+          type={type} />
+      );
+    })}
+  </div>
+));
 
 class Blurbs extends React.Component {
   constructor(props) {
@@ -106,46 +114,12 @@ class Blurbs extends React.Component {
   render() {
     const { activeBlurbId, blurbs, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
 
-    const BlurbWithMenu = SortableElement(({ data, id, isDeleting, isEditable, isEditing, isMenuVisible, type }) => {
-      return (
-        <div
-          onMouseEnter={() => this.showMenuForBlurb(id)}
-          className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}>
-          {isEditing ? blurbEditModeDomForData(type, data) : blurbDomForData(type, data)}
-          {isMenuVisible && (
-            <BlurbMenu
-              id={id}
-              isEditable={isEditable}
-              isEditing={isEditing}
-              isDeleting={isDeleting}
-              onCancel={this.cancelBlurb}
-              onEdit={this.editBlurb}
-              onDelete={this.deleteBlurb}
-              onSave={this.saveBlurb} />
-          )}
-        </div>
-      );
-    });
-
-    const BlurbsContainer = SortableContainer(({ activeBlurbId, blurbs, isDeleting, isEditing, isMenuVisible}) => (
-      <div className="blurbs">
-        {blurbs.map(({ data, id, position, type }) => {
-          const isActiveBlurb = id === activeBlurbId;
-          return (
-            <BlurbWithMenu
-              data={data}
-              id={id}
-              index={position}
-              isEditable={Boolean(data)}
-              isEditing={isActiveBlurb && isEditing}
-              isDeleting={isActiveBlurb && isDeleting}
-              isMenuVisible={isActiveBlurb && isMenuVisible}
-              key={id}
-              type={type} />
-          );
-        })}
-      </div>
-    ));
+    const menuActions = {
+      onCancel: this.cancelBlurb,
+      onDelete: this.deleteBlurb,
+      onEdit: this.editBlurb,
+      onSave: this.saveBlurb
+    };
 
     return(
       <BlurbsContainer
@@ -155,7 +129,9 @@ class Blurbs extends React.Component {
         isEditing={isEditingBlurb}
         isMenuVisible={isMenuVisible}
         onSortEnd={this.onRepositionEnd}
-        useDragHandle={true} />
+        useDragHandle={true}
+        menuActions={menuActions}
+        showMenuForBlurb={this.showMenuForBlurb}/>
     );
 
   };

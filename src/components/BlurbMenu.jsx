@@ -37,19 +37,17 @@ const EditButton = ({ onEdit }) => (
   </button>
 );
 
-const BlurbMenu = ({isEditable, isEditing, isDeleting, onCancel, onDelete, onEdit, onSave }) => {
-  return(
-    <div
-    className={'blurbMenu'}>
-      <div className='purpleLine'/>
-      {isEditable && !isEditing && !isDeleting && <EditButton onEdit={onEdit} />}
-      {!isEditing && !isDeleting && <RepositionHandle />}
-      {!isEditing && !isDeleting && <DeleteButton onDelete={onDelete} />}
-      {(isEditing || isDeleting) && <SaveButton onSave={onSave} />}
-      {(isEditing || isDeleting) && <CancelButton onCancel={onCancel} />}
-    </div>
-  );
-};
+const BlurbMenu = ({ isEditable, isEditing, isDeleting, onCancel, onDelete, onEdit, onSave }) => (
+  <div
+  className={'blurbMenu'}>
+    <div className='purpleLine'/>
+    {isEditable && !isEditing && !isDeleting && <EditButton onEdit={onEdit} />}
+    {!isEditing && !isDeleting && <RepositionHandle />}
+    {!isEditing && !isDeleting && <DeleteButton onDelete={onDelete} />}
+    {(isEditing || isDeleting) && <SaveButton onSave={onSave} />}
+    {(isEditing || isDeleting) && <CancelButton onCancel={onCancel} />}
+  </div>
+);
 
 BlurbMenu.propTypes = {
   isEditable: React.PropTypes.bool.isRequired,
