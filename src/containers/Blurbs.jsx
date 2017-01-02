@@ -65,9 +65,11 @@ class Blurbs extends React.Component {
 
   onRepositionEnd = ({oldIndex, newIndex}) => {
     this.setState(({ blurbs }) => ({
-      blurbs: arrayMove(blurbs, oldIndex, newIndex)
+      blurbs: arrayMove(blurbs, oldIndex, newIndex).map((blurb, index) => ({ ...blurb, position: index }))
     }));
-    this.saveBlurbPostitions();
+    const { savePositions } = this.props;
+    const newBlurbPositions = this.state.blurbs.map(({ id, position }) => ({ id, position }));
+    savePositions(newBlurbPositions);
   };
 
   saveBlurb = (data) => {
@@ -92,13 +94,6 @@ class Blurbs extends React.Component {
       isEditingBlurb: false,
       isDeletingBlurb: false
     });
-  }
-
-  saveBlurbPostitions = () => {
-    this.setState(({ blurbs }) => ({
-      blurbs: blurbs.map((blurb, index) => ({ ...blurb, postition: index }))
-    }));
-    this.props.savePositions();
   }
 
   showMenuForBlurb = (id) => {
@@ -175,8 +170,8 @@ mutation removeBlurb($id: ID!) {
 }`;
 
 const SAVE_BLURB_POSITIONS_MUTATION = gql`
-mutation saveBlurbPostitions($blurbPositions: [BlurbPosition]) {
-  saveBlurbPostitions(blurbPositions: $blurbPositions) {
+mutation saveBlurbPostitions($blurbPositions: [BlurbPositionInput]) {
+  repositionBlurbs(blurbPositions: $blurbPositions) {
     id
     position
   }
@@ -205,24 +200,27 @@ export default compose(
         }
       })
     })
+  }),
+  graphql(SAVE_BLURB_POSITIONS_MUTATION, {
+    props: ({ mutate }) => ({
+      savePositions: (blurbPositions) => mutate({
+        variables: { blurbPositions },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const newPositions = mutationResult.data.repositionBlurbs;
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $set: prev.edition.blurbs.map(blurb => {
+                    const { position } = newPositions.find(pos => pos.id === blurb.id) || {};
+                    return { ...blurb, position };
+                  })
+                }
+              }
+            });
+          }
+        }
+      })
+    })
   })
-  // graphql(SAVE_BLURB_POSITIONS_MUTATION, {
-  //   props: ({ mutate }) => ({
-  //     saveBlurbPostitions: (blurbPositions) => mutate({
-  //       variables: { blurbPositions },
-  //       updateQueries: {
-  //         currentEdition: (prev, { mutationResult }) => {
-  //           const index = prev.edition.blurbs.findIndex(blurb => blurb.id === id);
-  //           return update(prev, {
-  //             edition: {
-  //               blurbs: {
-  //                 $splice: [[index, 1]]
-  //               }
-  //             }
-  //           });
-  //         }
-  //       }
-  //     })
-  //   })
-  // })
 )(Blurbs);
