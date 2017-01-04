@@ -10,10 +10,10 @@ const blurbDomForData = (type, data) => {
 };
 
 const blurbEditModeDomForData = (id, type, data) => {
-  return <div>EDIT ME</div>;
-  // const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
-  // const Template = templates[templateName];
-  // return (Template) ? <Template key={id} {...data}/> : null;
+  const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
+  const Template = templates[`${templateName}EditMode`];
+  const NotFound = () => <div>EDIT MODE NOT FOUND - BOO</div>
+return (Template) ? <Template key={id} {...data}/> : <NotFound/>;
 };
 
 const BlurbWithMenu = SortableElement(({
