@@ -8,7 +8,16 @@ import BlurbWithMenu from '../components/BlurbWithMenu';
 const sortByPosition = (a, b) => a.position - b.position;
 const reindexBlurbs = (blurb, index) => ({ ...blurb, position: index });
 
-const BlurbsContainer = SortableContainer(({ activeBlurbId, blurbs, isDeleting, isEditing, isMenuVisible, menuActions, showMenuForBlurb }) => (
+const BlurbsContainer = SortableContainer(({
+  activeBlurbId,
+  blurbs,
+  isDeleting,
+  isEditing,
+  isMenuVisible,
+  menuActions,
+  showMenuForBlurb,
+  updateBlurbData
+}) => (
   <div className="blurbs">
     {blurbs.map(({ data, id, position, type }) => {
       const isActiveBlurb = id === activeBlurbId;
@@ -24,7 +33,8 @@ const BlurbsContainer = SortableContainer(({ activeBlurbId, blurbs, isDeleting, 
           key={id}
           menuActions={menuActions}
           onShowMenuForBlurb={showMenuForBlurb}
-          type={type} />
+          type={type}
+          updateData={updateBlurbData} />
       );
     })}
   </div>
@@ -39,6 +49,7 @@ class Blurbs extends React.Component {
     this.state = {
       activeBlurbId: null,
       blurbs: blurbs && [ ...blurbs.sort(sortByPosition) ],
+      editingBlurbData: null,
       isDeletingBlurb: false,
       isEditingBlurb: false,
       isMenuVisible: false
@@ -61,6 +72,7 @@ class Blurbs extends React.Component {
   cancelBlurb = () => {
     this.setState({
       activeBlurbId: null,
+      editingBlurbData: null,
       isEditingBlurb: false,
       isDeletingBlurb: false
     });
@@ -83,13 +95,13 @@ class Blurbs extends React.Component {
 
   saveBlurb = (data) => {
 
-    const { activeBlurbId, isEditingBlurb, isDeletingBlurb } = this.state;
+    const { activeBlurbId, editingBlurbData, isEditingBlurb, isDeletingBlurb } = this.state;
     const { editionId, removeBlurb } = this.props;
 
     if (activeBlurbId) {
 
       if (isEditingBlurb) {
-
+        console.log('SAVE: ', activeBlurbId, editingBlurbData);
       }
 
       if (isDeletingBlurb) {
@@ -103,6 +115,7 @@ class Blurbs extends React.Component {
 
     this.setState({
       activeBlurbId: null,
+      editingBlurbData: null,
       isEditingBlurb: false,
       isDeletingBlurb: false
     });
@@ -113,6 +126,12 @@ class Blurbs extends React.Component {
       activeBlurbId: (isDeletingBlurb || isEditingBlurb) ?  activeBlurbId : id,
       isMenuVisible: true
     }));
+  }
+
+  updateBlurbData = (data) => {
+    this.setState({
+      editingBlurbData: data
+    });
   }
 
   render() {
@@ -135,7 +154,8 @@ class Blurbs extends React.Component {
         onSortEnd={this.onRepositionEnd}
         useDragHandle={true}
         menuActions={menuActions}
-        showMenuForBlurb={this.showMenuForBlurb}/>
+        showMenuForBlurb={this.showMenuForBlurb}
+        updateBlurbData={this.updateBlurbData} />
     );
 
   };

@@ -6,14 +6,13 @@ import templates from 'daily-templates';
 const blurbDomForData = (type, data) => {
   const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
   const Template = templates[templateName];
-  return (Template) ? <Template {...data}/> : null;
+  return Template && <Template data={data} />;
 };
 
-const blurbEditModeDomForData = (id, type, data) => {
+const blurbEditModeDomForData = (type, data, updateData) => {
   const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
   const Template = templates[`${templateName}EditMode`];
-  const NotFound = () => <div>EDIT MODE NOT FOUND - BOO</div>
-return (Template) ? <Template key={id} {...data}/> : <NotFound/>;
+  return Template && <Template data={data} updateData={updateData} />;
 };
 
 const BlurbWithMenu = SortableElement(({
@@ -25,12 +24,13 @@ const BlurbWithMenu = SortableElement(({
   isMenuVisible,
   menuActions,
   onShowMenuForBlurb,
-  type
+  type,
+  updateData
 }) => (
   <div
     onMouseEnter={() => onShowMenuForBlurb(id)}
     className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}>
-    {isEditing ? blurbEditModeDomForData(type, data) : blurbDomForData(type, data)}
+    {isEditing ? blurbEditModeDomForData(type, data, updateData) : blurbDomForData(type, data)}
     {isMenuVisible && (
       <BlurbMenu
         id={id}
