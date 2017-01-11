@@ -97,12 +97,13 @@ class Blurbs extends React.Component {
   saveBlurb = (data) => {
 
     const { activeBlurbId, editingBlurbData, isEditingBlurb, isDeletingBlurb } = this.state;
-    const { editionId, removeBlurb } = this.props;
+    const { editionId, removeBlurb, updateBlurb } = this.props;
 
     if (activeBlurbId) {
 
       if (isEditingBlurb) {
         console.log('SAVE: ', activeBlurbId, editingBlurbData);
+        updateBlurb(activeBlurbId, editingBlurbData);
       }
 
       if (isDeletingBlurb) {
@@ -180,6 +181,14 @@ mutation saveBlurbPostitions($blurbPositions: [BlurbPositionInput]) {
   }
 }`;
 
+const SAVE_BLURB_DATA_MUTATION = gql`
+mutation saveBlurbData($blurbId: ID!, $data: JSON) {
+  updateBlurb(id: $blurbId, data: $data) {
+    id
+    data
+  }
+}`;
+
 Blurbs.propTypes = {
   blurbs: React.PropTypes.array.isRequired,
   editionId: React.PropTypes.string.isRequired
@@ -222,6 +231,25 @@ export default compose(
                     const { position } = newPositions.find(pos => pos.id === blurb.id) || {};
                     return { ...blurb, position };
                   })
+                }
+              }
+            });
+          }
+        }
+      })
+    })
+  }),
+  graphql(SAVE_BLURB_DATA_MUTATION, {
+    props: ({ mutate }) => ({
+      updateBlurb: ( blurbId, data ) => mutate({
+        variables: { blurbId, data },
+        updateQueries: {
+          currentEdition: (prev, { mutationResult }) => {
+            const { id, data: newData } = mutationResult.data.updateBlurb;
+            return update(prev, {
+              edition: {
+                blurbs: {
+                  $set: prev.edition.blurbs.map(blurb => (blurb.id === id) ? { ...blurb, data: newData } : blurb)
                 }
               }
             });

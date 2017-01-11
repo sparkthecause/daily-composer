@@ -6,7 +6,7 @@ import templates from 'daily-templates';
 const blurb = (data, isEditing, type, updateData) => {
   const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
   const Template = templates[templateName];
-  return (Template && templateName === 'Title') && <Template data={data} isEditing={isEditing} updateData={updateData} />;
+  return Template && <Template data={data} isEditing={isEditing} updateData={updateData} />;
 };
 
 const BlurbWithMenu = SortableElement(({
