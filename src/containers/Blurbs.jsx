@@ -11,6 +11,7 @@ const reindexBlurbs = (blurb, index) => ({ ...blurb, position: index });
 const BlurbsContainer = SortableContainer(({
   activeBlurbId,
   blurbs,
+  editingBlurbData,
   isDeleting,
   isEditing,
   isMenuVisible,
@@ -23,7 +24,7 @@ const BlurbsContainer = SortableContainer(({
       const isActiveBlurb = id === activeBlurbId;
       return (
         <BlurbWithMenu
-          data={data}
+          data={(isActiveBlurb && isEditing && editingBlurbData) ? editingBlurbData : data}
           id={id}
           index={position}
           isEditable={Boolean(data)}
@@ -135,7 +136,7 @@ class Blurbs extends React.Component {
   }
 
   render() {
-    const { activeBlurbId, blurbs, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
+    const { activeBlurbId, blurbs, editingBlurbData, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
 
     const menuActions = {
       onCancel: this.cancelBlurb,
@@ -148,6 +149,7 @@ class Blurbs extends React.Component {
       <BlurbsContainer
         activeBlurbId={activeBlurbId}
         blurbs={blurbs}
+        editingBlurbData={editingBlurbData}
         isDeleting={isDeletingBlurb}
         isEditing={isEditingBlurb}
         isMenuVisible={isMenuVisible}

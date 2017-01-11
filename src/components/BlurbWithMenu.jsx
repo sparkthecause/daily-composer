@@ -3,16 +3,10 @@ import { SortableElement } from 'react-sortable-hoc';
 import BlurbMenu from '../components/BlurbMenu';
 import templates from 'daily-templates';
 
-const blurbDomForData = (type, data) => {
+const blurb = (data, isEditing, type, updateData) => {
   const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
   const Template = templates[templateName];
-  return Template && <Template data={data} />;
-};
-
-const blurbEditModeDomForData = (type, data, updateData) => {
-  const templateName = Object.keys(templates).find(tpl => tpl.toLowerCase() === type);
-  const Template = templates[`${templateName}EditMode`];
-  return Template && <Template data={data} updateData={updateData} />;
+  return (Template && templateName === 'Title') && <Template data={data} isEditing={isEditing} updateData={updateData} />;
 };
 
 const BlurbWithMenu = SortableElement(({
@@ -30,7 +24,7 @@ const BlurbWithMenu = SortableElement(({
   <div
     onMouseEnter={() => onShowMenuForBlurb(id)}
     className={`blurbWrapper ${isMenuVisible ? 'active' : ''} ${isDeleting ? 'deleting' : ''}`}>
-    {isEditing ? blurbEditModeDomForData(type, data, updateData) : blurbDomForData(type, data)}
+    {blurb(data, isEditing, type, updateData)}
     {isMenuVisible && (
       <BlurbMenu
         id={id}
