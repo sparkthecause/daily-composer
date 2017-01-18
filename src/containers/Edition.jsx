@@ -1,10 +1,10 @@
 import React from 'react';
+import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
-import update from 'react-addons-update';
 import Header from '../components/Header';
-import Blurbs from '../components/Blurbs';
+import Blurbs from '../containers/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
 
@@ -19,7 +19,7 @@ const defaultDataForBlurbType = (blurbType) => {
     case 'header':
       return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
     case 'share':
-      return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
+      return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_text.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
     default:
       return null;
   }
@@ -30,12 +30,7 @@ class Edition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeBlurbId: null,
       isAddingBlurb: false,
-      isDeletingBlurb: false,
-      isEditingBlurb: false,
-      isMenuVisible: false,
-      isRepositioningBlurb: false,
       selectedBlurbType: ''
     };
   }
@@ -72,52 +67,13 @@ class Edition extends React.Component {
     }
   }
 
-  createBlurb = () => {
-
-  }
-
-  deleteBlurb = (id) => {
-
-  }
-
-  editBlurb = (id) => {
-    this.setState({
-      activeBlurbId: id,
-      isEditingBlurb: true
-    });
-  }
-
-  saveBlurb = (data) => {
-    // TODO: save changes to activeBlurbId
-    this.setState({
-      activeBlurbId: null,
-      isEditingBlurb: false,
-      isDeletingBlurb: false,
-      isRepositioningBlurb: false
-    });
-  }
-
-  repositionBlurb = (id) => {
-    this.setState({
-      activeBlurbId: id,
-      isRepositioningBlurb: true
-    });
-  }
-
-  showMenuForBlurb = (id) => {
-    this.setState(({ activeBlurbId, isDeletingBlurb, isEditingBlurb, isRepositioningBlurb }, props) => ({
-      activeBlurbId: (isDeletingBlurb || isEditingBlurb || isRepositioningBlurb) ?  activeBlurbId : id,
-      isMenuVisible: true
-    }));
-  }
-
   showInfoPanel = () => {
     alert("info");
   }
 
   render() {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
-    const { activeBlurbId, isAddingBlurb, isDeletingBlurb, isEditingBlurb, isMenuVisible, isRepositioningBlurb, selectedBlurbType } = this.state;
+    const { isAddingBlurb, selectedBlurbType } = this.state;
 
     const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
     const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
@@ -165,17 +121,6 @@ class Edition extends React.Component {
 
     }
 
-    const setBlurbProps = (blurb) => {
-      return blurb && blurb.id === activeBlurbId ? {
-        ...blurb,
-        isEditable: Boolean(blurb.data),
-        isEditing: isEditingBlurb,
-        isDeleting: isDeletingBlurb,
-        isRepositioning: isRepositioningBlurb,
-        isMenuVisible: isMenuVisible
-      } : blurb;
-    };
-
     return(
       <div>
         <link
@@ -190,12 +135,8 @@ class Edition extends React.Component {
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
         <Blurbs
-          blurbs={edition.blurbs.map(setBlurbProps)}
-          onDelete={this.deleteBlurb}
-          onEdit={this.editBlurb}
-          onReposition={this.repositionBlurb}
-          onSave={this.saveBlurb}
-          onShowMenu={this.showMenuForBlurb}/>
+          blurbs={edition.blurbs}
+          editionId={edition.id} />
         <AddBlurbButton
           isAddingBlurb={isAddingBlurb}
           onAddBlurb={this.addBlurb}
