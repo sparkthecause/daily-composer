@@ -49,7 +49,7 @@ class Blurbs extends React.Component {
 
     this.state = {
       activeBlurbId: null,
-      blurbs: blurbs && [ ...blurbs.sort(sortByPosition) ],
+      blurbs: blurbs && [ ...blurbs ].sort(sortByPosition),
       editingBlurbData: null,
       isDeletingBlurb: false,
       isEditingBlurb: false,
@@ -60,7 +60,7 @@ class Blurbs extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { blurbs } = nextProps;
     this.setState({
-      blurbs: blurbs && [ ...blurbs.sort(sortByPosition) ],
+      blurbs: blurbs && [ ...blurbs ].sort(sortByPosition),
     });
   }
 
@@ -102,7 +102,6 @@ class Blurbs extends React.Component {
     if (activeBlurbId) {
 
       if (isEditingBlurb) {
-        console.log('SAVE: ', activeBlurbId, editingBlurbData);
         updateBlurb(activeBlurbId, editingBlurbData);
       }
 
