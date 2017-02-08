@@ -1,5 +1,5 @@
 {
-  "name": "daily-creator",
+  "name": "daily-composer",
   "version": "0.1.0",
   "description": "Admin interface for creating Spark Daily editions",
   "private": true,
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sparkthecause/daily-creator.git"
+    "url": "git+https://github.com/sparkthecause/daily-composer.git"
   },
   "author": "Charles Burgess",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sparkthecause/daily-creator/issues"
+    "url": "https://github.com/sparkthecause/daily-composer/issues"
   },
-  "homepage": "https://github.com/sparkthecause/daily-api",
+  "homepage": "https://daily-composer.sparkthecause.com",
   "dependencies": {
     "apollo-client": "^0.8.1",
     "daily-templates": "^0.6.1",
