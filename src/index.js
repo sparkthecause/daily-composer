@@ -8,6 +8,10 @@ import Editions from './containers/Editions';
 import Edition from './containers/Edition';
 import './index.css';
 
+const apiUrl = process.env.NODE_ENV === "development"
+  ? 'http://localhost:3002/graphql'
+  : 'http://daily-api.sparkthecause.com/graphql';
+
 const client = new ApolloClient({
   dataIdFromObject: (result) => {
     if (result.id && result.__typename) {
@@ -15,7 +19,7 @@ const client = new ApolloClient({
     }
     return null;
   },
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:3002/graphql' }),
+  networkInterface: createNetworkInterface({ uri: apiUrl }),
 });
 
 ReactDOM.render(
