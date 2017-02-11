@@ -10,7 +10,7 @@ import './index.css';
 
 const apiUrl = process.env.NODE_ENV === "development"
   ? 'http://localhost:3002/graphql'
-  : 'http://daily-api.sparkthecause.com/graphql';
+  : 'https://daily-api.sparkthecause.com/graphql';
 
 const client = new ApolloClient({
   dataIdFromObject: (result) => {
