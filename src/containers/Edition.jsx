@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import Header from '../components/Header';
+import Subject from '../components/Subject';
 import Blurbs from '../containers/Blurbs';
 import EditionNotFound from '../components/EditionNotFound';
 import AddBlurbButton from '../components/AddBlurbButton';
@@ -65,6 +66,11 @@ class Edition extends React.Component {
         selectedBlurbType: ''
       });
     }
+  }
+
+  updateSubject = (subject) => {
+    const { updateSubject, data: { edition: { id } } } = this.props;
+    updateSubject(id, subject);
   }
 
   showInfoPanel = () => {
@@ -134,6 +140,9 @@ class Edition extends React.Component {
           nextDate={nextDate}
           previousDate={previousDate}
           publishDate={formattedPublishDate} />
+        <Subject
+          onChange={this.updateSubject}
+          subject={edition.subject} />
         <Blurbs
           blurbs={edition.blurbs}
           editionId={edition.id} />
@@ -196,16 +205,24 @@ const CREATE_BLURB_MUTATION = gql`
 const EDITION_QUERY = gql`
   query currentEdition($publishDate: Date!) {
     edition(publishDate: $publishDate) {
-      id
       approvedAt
-      publishOn (format: "YYYY-MM-DD")
-      cssHref
       blurbs {
         id
         type
         data
         position
       }
+      cssHref
+      id
+      publishOn (format: "YYYY-MM-DD")
+      subject
+    }
+  }`;
+const UPDATE_SUBJECT_MUTATION = gql`
+  mutation updateSubjectForEdition($editionId: ID!, $subject: String) {
+    updateEdition(id: $editionId, subject: $subject) {
+      id
+      subject
     }
   }`;
 
@@ -257,5 +274,12 @@ export default compose(
         }
       })
     })
-  })
+  }),
+  graphql(UPDATE_SUBJECT_MUTATION, {
+    props: ({ mutate }) => ({
+      updateSubject: (editionId, subject) => mutate({
+        variables: { editionId, subject }
+      })
+    })
+  }),
 )(Edition);
