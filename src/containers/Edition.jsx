@@ -179,16 +179,17 @@ const APPROVE_EDITION_MUTATION = gql`
 const CREATE_EDITION_MUTATION = gql`
   mutation createEdition($publishDate: Date!, $cssHref: String) {
     createEdition(publishDate: $publishDate, cssHref: $cssHref) {
-      id
       approvedAt
-      publishOn (format: "YYYY-MM-DD")
-      cssHref
       blurbs {
         id
         type
         data
         position
       }
+      cssHref
+      id
+      publishOn (format: "YYYY-MM-DD")
+      subject
     }
   }`;
 
