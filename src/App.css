@@ -114,3 +114,6 @@ a {
   margin-bottom: 20px;
   text-overflow: ellipsis;
 }
+.subject::placeholder {
+  color: #aeaeae;
+}
