@@ -5,7 +5,7 @@
 a {
   cursor: pointer;
 }
-button:focus {
+*:focus {
   outline: 0;
 }
 .container {
@@ -99,4 +99,21 @@ button:focus {
 .menuSpacer {
   height: 1px;
   width: 150px;
+}
+.subject {
+  color: #8E59CD;
+  text-align: center;
+  width: 400px;
+  display: block;
+  font-size: 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #8E59CD;
+  padding: 10px 0;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  text-overflow: ellipsis;
+}
+.subject::placeholder {
+  color: #aeaeae;
 }
