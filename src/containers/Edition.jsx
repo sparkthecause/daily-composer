@@ -13,6 +13,8 @@ const defaultDataForBlurbType = (blurbType) => {
   switch (blurbType) {
     case 'title':
       return { text: 'Title' };
+    case 'image':
+      return { src: 'https://cdn.sparkthecause.com/daily/images/placeholder_image.jpg', alt:' Placeholder' };
     case 'paragraph':
       return { text: 'Paragraph' };
     case 'unsubscribe':
