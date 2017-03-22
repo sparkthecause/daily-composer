@@ -117,3 +117,6 @@ a {
 .subject::placeholder {
   color: #aeaeae;
 }
+input {
+  background: none;
+}
