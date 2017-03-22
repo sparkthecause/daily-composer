@@ -1,4 +1,5 @@
 import React from 'react';
+import templates from 'daily-templates';
 import createBlurbIcon from '../assets/icon-add-color.svg';
 
 const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, selectedBlurbType }) => {
@@ -19,12 +20,16 @@ const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, sel
       className="create-blurb-button">
       <select value={selectedBlurbType} onChange={onBlurbTypeSelected}>
         <option value="">Select</option>
-        <option value="title">Title</option>
-        <option value="paragraph">Paragraph</option>
-        <option value="divider">Divider</option>
-        <option value="share">Share</option>
-        <option value="header">Header</option>
-        <option value="unsubscribe">Unsubscribe</option>
+        {
+          Object.keys(templates).map(templateName => templateName && (
+            <option
+              key={templateName.toLowerCase()}
+              value={templateName.toLowerCase()}>
+                {templateName}
+              </option>
+            )
+          )
+        }
       </select>
     </div>
   );
