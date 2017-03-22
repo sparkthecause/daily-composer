@@ -97,12 +97,12 @@ class Blurbs extends React.Component {
   saveBlurb = (data) => {
 
     const { activeBlurbId, editingBlurbData, isEditingBlurb, isDeletingBlurb } = this.state;
-    const { editionId, removeBlurb, updateBlurb } = this.props;
+    const { editionId, removeBlurb, updateBlurbData } = this.props;
 
     if (activeBlurbId) {
 
       if (isEditingBlurb) {
-        updateBlurb(activeBlurbId, editingBlurbData);
+        updateBlurbData(activeBlurbId, editingBlurbData);
       }
 
       if (isDeletingBlurb) {
@@ -129,7 +129,7 @@ class Blurbs extends React.Component {
     }));
   }
 
-  updateBlurbData = (data) => {
+  changeBlurbData = (data) => {
     this.setState({
       editingBlurbData: data
     });
@@ -157,7 +157,7 @@ class Blurbs extends React.Component {
         useDragHandle={true}
         menuActions={menuActions}
         showMenuForBlurb={this.showMenuForBlurb}
-        updateBlurbData={this.updateBlurbData} />
+        updateBlurbData={this.changeBlurbData} />
     );
 
   };
@@ -182,7 +182,7 @@ mutation saveBlurbPostitions($blurbPositions: [BlurbPositionInput]) {
 
 const SAVE_BLURB_DATA_MUTATION = gql`
 mutation saveBlurbData($blurbId: ID!, $data: JSON) {
-  updateBlurb(id: $blurbId, data: $data) {
+  updateBlurbData(id: $blurbId, data: $data) {
     id
     data
   }
@@ -240,11 +240,11 @@ export default compose(
   }),
   graphql(SAVE_BLURB_DATA_MUTATION, {
     props: ({ mutate }) => ({
-      updateBlurb: ( blurbId, data ) => mutate({
+      updateBlurbData: ( blurbId, data ) => mutate({
         variables: { blurbId, data },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
-            const { id, data: newData } = mutationResult.data.updateBlurb;
+            const { id, data: newData } = mutationResult.data.updateBlurbData;
             return update(prev, {
               edition: {
                 blurbs: {
