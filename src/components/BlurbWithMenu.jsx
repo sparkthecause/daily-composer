@@ -12,6 +12,7 @@ const blurb = (data, isEditing, type, updateData) => {
 const BlurbWithMenu = SortableElement(({
   data,
   id,
+  isChangePending,
   isDeleting,
   isEditable,
   isEditing,
@@ -28,6 +29,7 @@ const BlurbWithMenu = SortableElement(({
     {isMenuVisible && (
       <BlurbMenu
         id={id}
+        isChangePending={isChangePending}
         isEditable={isEditable}
         isEditing={isEditing}
         isDeleting={isDeleting}

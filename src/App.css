@@ -120,3 +120,6 @@ a {
 input {
   background: none;
 }
+button:disabled {
+  opacity: 0.25;
+}
