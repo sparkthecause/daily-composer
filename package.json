@@ -4,7 +4,7 @@
   "description": "Admin interface for creating Spark Daily editions",
   "private": true,
   "engines": {
-    "node": "6.3.0",
+    "node": "6.10.1",
     "npm": "3.10.5"
   },
   "scripts": {
