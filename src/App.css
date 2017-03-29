@@ -117,3 +117,13 @@ a {
 .subject::placeholder {
   color: #aeaeae;
 }
+input {
+  background: none;
+}
+textarea {
+  background: none;
+  border: none;
+}
+button:disabled {
+  opacity: 0.25;
+}

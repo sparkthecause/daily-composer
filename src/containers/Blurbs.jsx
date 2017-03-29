@@ -12,6 +12,7 @@ const BlurbsContainer = SortableContainer(({
   activeBlurbId,
   blurbs,
   editingBlurbData,
+  isChangePending,
   isDeleting,
   isEditing,
   isMenuVisible,
@@ -27,9 +28,10 @@ const BlurbsContainer = SortableContainer(({
           data={(isActiveBlurb && isEditing && editingBlurbData) ? editingBlurbData : data}
           id={id}
           index={position}
+          isChangePending={isChangePending}
+          isDeleting={isActiveBlurb && isDeleting}
           isEditable={Boolean(data)}
           isEditing={isActiveBlurb && isEditing}
-          isDeleting={isActiveBlurb && isDeleting}
           isMenuVisible={isActiveBlurb && isMenuVisible}
           key={id}
           menuActions={menuActions}
@@ -51,6 +53,7 @@ class Blurbs extends React.Component {
       activeBlurbId: null,
       blurbs: blurbs && [ ...blurbs ].sort(sortByPosition),
       editingBlurbData: null,
+      isChangePending: false,
       isDeletingBlurb: false,
       isEditingBlurb: false,
       isMenuVisible: false
@@ -74,8 +77,9 @@ class Blurbs extends React.Component {
     this.setState({
       activeBlurbId: null,
       editingBlurbData: null,
-      isEditingBlurb: false,
-      isDeletingBlurb: false
+      isChangePending: false,
+      isDeletingBlurb: false,
+      isEditingBlurb: false
     });
   }
 
@@ -131,12 +135,13 @@ class Blurbs extends React.Component {
 
   changeBlurbData = (data) => {
     this.setState({
-      editingBlurbData: data
+      editingBlurbData: data,
+      isChangePending: true
     });
   }
 
   render() {
-    const { activeBlurbId, blurbs, editingBlurbData, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
+    const { activeBlurbId, blurbs, editingBlurbData, isChangePending, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
 
     const menuActions = {
       onCancel: this.cancelBlurb,
@@ -150,6 +155,7 @@ class Blurbs extends React.Component {
         activeBlurbId={activeBlurbId}
         blurbs={blurbs}
         editingBlurbData={editingBlurbData}
+        isChangePending={isChangePending}
         isDeleting={isDeletingBlurb}
         isEditing={isEditingBlurb}
         isMenuVisible={isMenuVisible}

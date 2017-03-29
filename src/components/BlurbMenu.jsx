@@ -18,8 +18,8 @@ const DeleteButton = ({ onDelete }) => (
   </button>
 );
 
-const SaveButton = ({ onSave }) => (
-  <button onClick={onSave}>
+const SaveButton = ({ isDisabled, onSave }) => (
+  <button disabled={isDisabled} onClick={onSave}>
     <img src={doneIcon} alt="✏️" />
   </button>
 );
@@ -37,19 +37,20 @@ const EditButton = ({ onEdit }) => (
   </button>
 );
 
-const BlurbMenu = ({ isEditable, isEditing, isDeleting, onCancel, onDelete, onEdit, onSave }) => (
+const BlurbMenu = ({ isChangePending, isEditable, isEditing, isDeleting, onCancel, onDelete, onEdit, onSave }) => (
   <div
   className={'blurbMenu'}>
     <div className='purpleLine'/>
     {isEditable && !isEditing && !isDeleting && <EditButton onEdit={onEdit} />}
     {!isEditing && !isDeleting && <RepositionHandle />}
     {!isEditing && !isDeleting && <DeleteButton onDelete={onDelete} />}
-    {(isEditing || isDeleting) && <SaveButton onSave={onSave} />}
+    {(isEditing || isDeleting) && <SaveButton onSave={onSave} isDisabled={!isChangePending}/>}
     {(isEditing || isDeleting) && <CancelButton onCancel={onCancel} />}
   </div>
 );
 
 BlurbMenu.propTypes = {
+  isChangePending: React.PropTypes.bool.isRequired,
   isEditable: React.PropTypes.bool.isRequired,
   isEditing: React.PropTypes.bool.isRequired,
   isDeleting: React.PropTypes.bool.isRequired,
