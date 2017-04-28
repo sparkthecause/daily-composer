@@ -44,7 +44,7 @@ const BlurbMenu = ({ isChangePending, isEditable, isEditing, isDeleting, onCance
     {isEditable && !isEditing && !isDeleting && <EditButton onEdit={onEdit} />}
     {!isEditing && !isDeleting && <RepositionHandle />}
     {!isEditing && !isDeleting && <DeleteButton onDelete={onDelete} />}
-    {(isEditing || isDeleting) && <SaveButton onSave={onSave} isDisabled={!isChangePending}/>}
+    {(isEditing || isDeleting) && <SaveButton onSave={onSave} isDisabled={!isChangePending && !isDeleting}/>}
     {(isEditing || isDeleting) && <CancelButton onCancel={onCancel} />}
   </div>
 );
