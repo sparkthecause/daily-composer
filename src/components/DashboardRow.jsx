@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+import { format } from 'date-fns';
 import detailIcon from '../assets/icon-arrow-right-color.svg';
 import Badge from './Badge';
-import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #FFFFFF;
+  height: 75px;
+  background: ${props => props.isNotCreated ? '#8E59CD' : '#FFFFFF'};
+  color: ${props => props.isNotCreated ? '#FFFFFF' : '#8E59CD'};
   border: 2px solid #8E59CD;
   border-radius: 20px;
   padding: 10px 20px;
@@ -16,7 +19,6 @@ const Container = styled.div`
 
 const PublishDate = styled.span`
   font-family: avenir-heavy;
-  color: #8E59CD;
   margin-right: 20px;
 `;
 
@@ -36,11 +38,16 @@ const StyledLink = styled(Link)`
   margin-left: 10px;
 `;
 
-const DashboardRow = ({ messagesBounced, messagesOpened, messagesSent, publishOn, subject }) => {
-
-  return (
+const DashboardRow = ({ isNotCreated, messagesBounced, messagesOpened, messagesSent, publishOn, subject }) =>
+  isNotCreated ?
+    <Link to={`/editions/${publishOn}`}>
+      <Container isNotCreated>
+        <PublishDate>Create edition for {format(publishOn, 'ddd, MMM D')}</PublishDate>
+      </Container>
+    </Link>
+  :
     <Container>
-      <PublishDate>{publishOn}</PublishDate>
+      <PublishDate>{format(publishOn, 'ddd, MMM D')}</PublishDate>
       <Subject>{subject}</Subject>
       <Spacer/>
       <Badge color="blue" value={messagesSent} />
@@ -51,9 +58,8 @@ const DashboardRow = ({ messagesBounced, messagesOpened, messagesSent, publishOn
           src={detailIcon}
           alt=">" />
       </StyledLink>
-    </Container>
-  );
-};
+    </Container>;
+
 
 DashboardRow.propTypes = {
   messagesBounced: React.PropTypes.number,

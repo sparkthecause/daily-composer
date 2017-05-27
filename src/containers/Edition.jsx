@@ -2,7 +2,7 @@ import React from 'react';
 import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment';
+import { addDays, format, subDays } from 'date-fns';
 import Header from '../components/Header';
 import Subject from '../components/Subject';
 import Blurbs from '../containers/Blurbs';
@@ -83,9 +83,9 @@ class Edition extends React.Component {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
     const { isAddingBlurb, selectedBlurbType } = this.state;
 
-    const nextDate = moment(publishDate).add(1, 'day').format('YYYY-MM-DD');
-    const previousDate = moment(publishDate).subtract(1, 'day').format('YYYY-MM-DD');
-    const formattedPublishDate = moment(publishDate).format('ddd, MMM D');
+    const nextDate = format('YYYY-MM-DD', addDays(publishDate, 1));
+    const previousDate = format('YYYY-MM-DD', subDays(publishDate, 1));
+    const formattedPublishDate = format(publishDate, 'ddd, MMM D');
 
     if (loading) {
 
