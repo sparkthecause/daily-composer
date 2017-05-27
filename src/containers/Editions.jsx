@@ -24,9 +24,9 @@ class Editions extends React.Component {
     const editionRows = editions.map((edition) =>
       <DashboardRow
         key={edition.id}
-        messagesBounced={1}
-        messagesOpened={2}
-        messagesSent={3}
+        messagesBounced={null}
+        messagesOpened={null}
+        messagesSent={null}
         publishOn={edition.publishOn}
         subject={edition.subject} />
     );

@@ -33,7 +33,8 @@
     "react-apollo": "^0.9.0",
     "react-dom": "^15.4.2",
     "react-router": "^2.8.1",
-    "react-sortable-hoc": "^0.4.5"
+    "react-sortable-hoc": "^0.4.5",
+    "styled-components": "^2.0.0"
   },
   "devDependencies": {
     "react-scripts": "0.8.5"
