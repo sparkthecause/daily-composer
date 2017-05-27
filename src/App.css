@@ -4,6 +4,7 @@
 }
 a {
   cursor: pointer;
+  text-decoration: none;
 }
 *:focus {
   outline: 0;
