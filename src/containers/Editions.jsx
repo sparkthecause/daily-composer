@@ -35,9 +35,9 @@ class Editions extends React.Component {
       <DashboardRow
         key={row.publishOn}
         isNotCreated={!Boolean(row.edition)}
-        messagesBounced={null}
-        messagesOpened={null}
-        messagesSent={null}
+        messagesBounced={row.edition && row.edition.messagesBounced}
+        messagesOpened={row.edition && row.edition.messagesOpened}
+        messagesSent={row.edition && row.edition.messagesSent}
         publishOn={row.publishOn}
         subject={row.edition && row.edition.subject} />
     );
@@ -67,6 +67,9 @@ const EDITIONS_QUERY = gql`
       id
       publishOn (format: "YYYY-MM-DD")
       subject
+      messagesBounced
+      messagesOpened
+      messagesSent
     }
   }`;
 
