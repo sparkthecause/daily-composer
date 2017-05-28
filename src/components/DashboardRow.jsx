@@ -20,12 +20,19 @@ const Container = styled.div`
 const PublishDate = styled.span`
   font-family: avenir-heavy;
   margin-right: 20px;
+  min-width: 100px;
 `;
 
 const Subject = styled.span`
   color: #959595;
   margin-right: 20px;
   @media (max-width: 768px) {
+    width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	}
+  @media (max-width: 320px) {
 		display: none;
 	}
 `;
