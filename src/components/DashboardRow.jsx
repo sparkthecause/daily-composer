@@ -46,26 +46,28 @@ const StyledLink = styled(Link)`
 `;
 
 const DashboardRow = ({ isNotCreated, messagesBounced, messagesOpened, messagesSent, publishOn, subject }) =>
-  isNotCreated ?
-    <Link to={`/editions/${publishOn}`}>
+  <Link to={`/editions/${publishOn}`}>
+    {isNotCreated ?
       <Container isNotCreated>
         <PublishDate>Create edition for {format(publishOn, 'ddd, MMM D')}</PublishDate>
       </Container>
-    </Link>
-  :
-    <Container>
-      <PublishDate>{format(publishOn, 'ddd, MMM D')}</PublishDate>
-      <Subject>{subject}</Subject>
-      <Spacer/>
-      <Badge color="blue" value={messagesSent} />
-      <Badge color="green" value={messagesOpened} />
-      <Badge color="red" value={messagesBounced} />
-      <StyledLink to={`/editions/${publishOn}`}>
-        <img
-          src={detailIcon}
-          alt=">" />
-      </StyledLink>
-    </Container>;
+    :
+      <Container>
+        <PublishDate>{format(publishOn, 'ddd, MMM D')}</PublishDate>
+        <Subject>{subject}</Subject>
+        <Spacer/>
+        <Badge color="blue" value={messagesSent} />
+        <Badge color="green" value={messagesOpened} />
+        <Badge color="red" value={messagesBounced} />
+        <StyledLink to={`/editions/${publishOn}`}>
+          <img
+            src={detailIcon}
+            alt=">" />
+        </StyledLink>
+      </Container>
+    }
+  </Link>
+;
 
 
 DashboardRow.propTypes = {
