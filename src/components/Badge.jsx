@@ -13,13 +13,13 @@ const colors = {
 
 const Span = styled.span`
   color: ${props => props.color};
-  min-width: 50px;
-	min-height: 50px;
-  line-height: 50px;
+  min-width: 40px;
+	min-height: 40px;
+  line-height: 40px;
   text-align: center;
   font-size: 18px;
   margin: 10px;
-	border-radius: 50px;
+	border-radius: 40px;
   border: 2px solid ${props => props.color};
 `;
 

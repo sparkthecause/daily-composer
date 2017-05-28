@@ -6,7 +6,7 @@ import detailIcon from '../assets/icon-arrow-right-color.svg';
 import Badge from './Badge';
 
 const Container = styled.div`
-  height: 75px;
+  height: 50px;
   background: ${props => props.isNotCreated ? '#8E59CD' : '#FFFFFF'};
   color: ${props => props.isNotCreated ? '#FFFFFF' : '#8E59CD'};
   border: 2px solid #8E59CD;
@@ -41,31 +41,31 @@ const Spacer = styled.span`
   margin: auto;
 `;
 
-const StyledLink = styled(Link)`
+const SyledImg = styled.img`
   margin-left: 10px;
 `;
 
 const DashboardRow = ({ isNotCreated, messagesBounced, messagesOpened, messagesSent, publishOn, subject }) =>
-  isNotCreated ?
-    <Link to={`/editions/${publishOn}`}>
+  <Link to={`/editions/${publishOn}`}>
+    {isNotCreated ?
       <Container isNotCreated>
         <PublishDate>Create edition for {format(publishOn, 'ddd, MMM D')}</PublishDate>
       </Container>
-    </Link>
-  :
-    <Container>
-      <PublishDate>{format(publishOn, 'ddd, MMM D')}</PublishDate>
-      <Subject>{subject}</Subject>
-      <Spacer/>
-      <Badge color="blue" value={messagesSent} />
-      <Badge color="green" value={messagesOpened} />
-      <Badge color="red" value={messagesBounced} />
-      <StyledLink to={`/editions/${publishOn}`}>
-        <img
+    :
+      <Container>
+        <PublishDate>{format(publishOn, 'ddd, MMM D')}</PublishDate>
+        <Subject>{subject}</Subject>
+        <Spacer/>
+        <Badge color="blue" value={messagesSent} />
+        <Badge color="green" value={messagesOpened} />
+        <Badge color="red" value={messagesBounced} />
+        <SyledImg
           src={detailIcon}
           alt=">" />
-      </StyledLink>
-    </Container>;
+      </Container>
+    }
+  </Link>
+;
 
 
 DashboardRow.propTypes = {
