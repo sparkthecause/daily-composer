@@ -8,7 +8,7 @@ import repositionIcon from '../assets/icon-reorder-color.svg';
 
 const RepositionHandle = SortableHandle(() => (
   <button>
-    <img src={repositionIcon} alt="↕️" />
+    <img draggable={false} src={repositionIcon} alt="↕️" />
   </button>
 ));
 
@@ -31,8 +31,7 @@ const CancelButton = ({ onCancel }) => (
 );
 
 const EditButton = ({ onEdit }) => (
-  <button
-    onClick={onEdit}>
+  <button onClick={onEdit}>
     <img src={editIcon} alt="✏️" />
   </button>
 );
