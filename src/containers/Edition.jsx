@@ -83,8 +83,8 @@ class Edition extends React.Component {
     const { data: { loading, edition, error }, params: { publishDate } } = this.props;
     const { isAddingBlurb, selectedBlurbType } = this.state;
 
-    const nextDate = format('YYYY-MM-DD', addDays(publishDate, 1));
-    const previousDate = format('YYYY-MM-DD', subDays(publishDate, 1));
+    const nextDate = format(addDays(publishDate, 1), 'YYYY-MM-DD');
+    const previousDate = format(subDays(publishDate, 1), 'YYYY-MM-DD');
     const formattedPublishDate = format(publishDate, 'ddd, MMM D');
 
     if (loading) {
