@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { format } from 'date-fns';
@@ -69,11 +70,11 @@ const DashboardRow = ({ isNotCreated, messagesBounced, messagesOpened, messagesS
 
 
 DashboardRow.propTypes = {
-  messagesBounced: React.PropTypes.number,
-  messagesOpened: React.PropTypes.number,
-  messagesSent: React.PropTypes.number,
-  publishOn: React.PropTypes.string.isRequired,
-  subject: React.PropTypes.string
+  messagesBounced: PropTypes.number,
+  messagesOpened: PropTypes.number,
+  messagesSent: PropTypes.number,
+  publishOn: PropTypes.string.isRequired,
+  subject: PropTypes.string
 };
 
 export default DashboardRow;

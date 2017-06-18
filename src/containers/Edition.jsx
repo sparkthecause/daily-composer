@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -161,12 +162,12 @@ class Edition extends React.Component {
 };
 
 Edition.propTypes = {
-  approveEdition: React.PropTypes.func.isRequired,
-  createBlurb: React.PropTypes.func.isRequired,
-  createEdition: React.PropTypes.func.isRequired,
-  data: React.PropTypes.shape({
-    loading: React.PropTypes.bool,
-    edition: React.PropTypes.object,
+  approveEdition: PropTypes.func.isRequired,
+  createBlurb: PropTypes.func.isRequired,
+  createEdition: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    loading: PropTypes.bool,
+    edition: PropTypes.object,
   }).isRequired
 };
 

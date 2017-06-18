@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { SortableHandle } from 'react-sortable-hoc';
 import cancelIcon from '../assets/icon-cancel-color.svg';
 import removeIcon from '../assets/icon-remove-color.svg';
@@ -49,14 +50,14 @@ const BlurbMenu = ({ isChangePending, isEditable, isEditing, isDeleting, onCance
 );
 
 BlurbMenu.propTypes = {
-  isChangePending: React.PropTypes.bool.isRequired,
-  isEditable: React.PropTypes.bool.isRequired,
-  isEditing: React.PropTypes.bool.isRequired,
-  isDeleting: React.PropTypes.bool.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired,
-  onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired
+  isChangePending: PropTypes.bool.isRequired,
+  isEditable: PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired
 };
 
 export default BlurbMenu;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import nextIcon from '../assets/icon-arrow-right-color.svg';
 import previousIcon from '../assets/icon-arrow-left-color.svg';
@@ -23,9 +24,9 @@ const DashboardHeader = ({ nextDate, previousDate, title }) => {
 };
 
 DashboardHeader.propTypes = {
-  nextDate: React.PropTypes.string.isRequired,
-  previousDate: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired
+  nextDate: PropTypes.string.isRequired,
+  previousDate: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default DashboardHeader;

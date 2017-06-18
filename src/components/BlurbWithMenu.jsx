@@ -42,13 +42,13 @@ const BlurbWithMenu = SortableElement(({
 ));
 
 BlurbWithMenu.propTypes = {
-  // isEditable: React.PropTypes.bool.isRequired,
-  // isEditing: React.PropTypes.bool.isRequired,
-  // isDeleting: React.PropTypes.bool.isRequired,
-  // onCancel: React.PropTypes.func.isRequired,
-  // onDelete: React.PropTypes.func.isRequired,
-  // onEdit: React.PropTypes.func.isRequired,
-  // onSave: React.PropTypes.func.isRequired
+  // isEditable: PropTypes.bool.isRequired,
+  // isEditing: PropTypes.bool.isRequired,
+  // isDeleting: PropTypes.bool.isRequired,
+  // onCancel: PropTypes.func.isRequired,
+  // onDelete: PropTypes.func.isRequired,
+  // onEdit: PropTypes.func.isRequired,
+  // onSave: PropTypes.func.isRequired
 };
 
 export default BlurbWithMenu;

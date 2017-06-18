@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DebounceInput from 'react-debounce-input';
 
 const Subject = ({ onChange, subject }) =>
@@ -11,8 +12,8 @@ const Subject = ({ onChange, subject }) =>
     onChange={(event) => onChange(event.target.value)} />
 
 Subject.propTypes = {
-  subject: React.PropTypes.string,
-  onChange: React.PropTypes.func.isRequired
+  subject: PropTypes.string,
+  onChange: PropTypes.func.isRequired
 };
 
 export default Subject;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import templates from 'daily-templates';
 import createBlurbIcon from '../assets/icon-add-color.svg';
 
@@ -38,9 +39,9 @@ const CreateBlurbButton = ({ isAddingBlurb, onAddBlurb, onBlurbTypeSelected, sel
 };
 
 CreateBlurbButton.propTypes = {
-  isAddingBlurb: React.PropTypes.bool.isRequired,
-  onAddBlurb: React.PropTypes.func.isRequired,
-  onBlurbTypeSelected: React.PropTypes.func.isRequired
+  isAddingBlurb: PropTypes.bool.isRequired,
+  onAddBlurb: PropTypes.func.isRequired,
+  onBlurbTypeSelected: PropTypes.func.isRequired
 };
 
 export default CreateBlurbButton;
