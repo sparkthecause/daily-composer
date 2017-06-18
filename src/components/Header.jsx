@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import nextIcon from '../assets/icon-arrow-right-color.svg';
 import previousIcon from '../assets/icon-arrow-left-color.svg';
@@ -42,12 +43,12 @@ const Header = ({ isApproved, nextDate, onApprove, onInfo, previousDate, publish
 };
 
 Header.propTypes = {
-  isApproved: React.PropTypes.bool,
-  nextDate: React.PropTypes.string.isRequired,
-  onApprove: React.PropTypes.func,
-  onInfo: React.PropTypes.func,
-  previousDate: React.PropTypes.string.isRequired,
-  publishDate: React.PropTypes.string.isRequired
+  isApproved: PropTypes.bool,
+  nextDate: PropTypes.string.isRequired,
+  onApprove: PropTypes.func,
+  onInfo: PropTypes.func,
+  previousDate: PropTypes.string.isRequired,
+  publishDate: PropTypes.string.isRequired
 };
 
 export default Header;

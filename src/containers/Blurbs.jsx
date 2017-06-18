@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import update from 'react-addons-update';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -195,8 +196,8 @@ mutation saveBlurbData($blurbId: ID!, $data: JSON) {
 }`;
 
 Blurbs.propTypes = {
-  blurbs: React.PropTypes.array.isRequired,
-  editionId: React.PropTypes.string.isRequired
+  blurbs: PropTypes.array.isRequired,
+  editionId: PropTypes.string.isRequired
 };
 
 export default compose(

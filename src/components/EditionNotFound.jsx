@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const EditionNotFound = ({ createEdition }) => {
   return(
@@ -15,7 +16,7 @@ const EditionNotFound = ({ createEdition }) => {
 };
 
 EditionNotFound.propTypes = {
-  createEdition: React.PropTypes.func.isRequired,
+  createEdition: PropTypes.func.isRequired,
 };
 
 export default EditionNotFound;
