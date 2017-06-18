@@ -20,8 +20,8 @@ class Editions extends React.Component {
       return <div>Error!</div>;
     }
 
-    const startWeek = startOfWeek(new Date(date));
-    const endWeek = endOfWeek(new Date(date));
+    const startWeek = startOfWeek(date);
+    const endWeek = endOfWeek(date);
     const headerTitle = `${format(startWeek, 'MMM D')} - ${format(endWeek, 'MMM D')}`;
     const dates = eachDay(startWeek, endWeek).map(date => format(date, 'YYYY-MM-DD'));
 
