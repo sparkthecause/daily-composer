@@ -24,8 +24,10 @@ const defaultDataForBlurbType = (blurbType) => {
       return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
     case 'share':
       return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_text.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
+    case 'tagline':
+      return { text: 'Read. Smile. Change the World.' };
     default:
-      return null;
+      return {};
   }
 };
 
