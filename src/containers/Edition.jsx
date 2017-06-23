@@ -22,6 +22,8 @@ const defaultDataForBlurbType = (blurbType) => {
       return { href: '' };
     case 'header':
       return { img: { src: 'https://cdn.sparkthecause.com/daily/images/email_header_white.png' } };
+    case 'section':
+      return { type: '', text: 'Section' };
     case 'share':
       return { sms: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_text.png' }, href: '' }, email: { img: { src: 'https://cdn.sparkthecause.com/daily/images/share_email.png' }, href: '' } };
     case 'tagline':
