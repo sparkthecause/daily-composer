@@ -13,6 +13,7 @@ const BlurbsContainer = SortableContainer(({
   activeBlurbId,
   blurbs,
   editingBlurbData,
+  editingBlurbFile,
   isChangePending,
   isDeleting,
   isEditing,
@@ -54,6 +55,7 @@ class Blurbs extends React.Component {
       activeBlurbId: null,
       blurbs: blurbs && [ ...blurbs ].sort(sortByPosition),
       editingBlurbData: null,
+      editingBlurbFile: null,
       isChangePending: false,
       isDeletingBlurb: false,
       isEditingBlurb: false,
@@ -78,6 +80,7 @@ class Blurbs extends React.Component {
     this.setState({
       activeBlurbId: null,
       editingBlurbData: null,
+      editingBlurbFile: null,
       isChangePending: false,
       isDeletingBlurb: false,
       isEditingBlurb: false
@@ -101,13 +104,13 @@ class Blurbs extends React.Component {
 
   saveBlurb = (data) => {
 
-    const { activeBlurbId, editingBlurbData, isEditingBlurb, isDeletingBlurb } = this.state;
+    const { activeBlurbId, editingBlurbData, editingBlurbFile, isEditingBlurb, isDeletingBlurb } = this.state;
     const { editionId, removeBlurb, updateBlurbData } = this.props;
 
     if (activeBlurbId) {
 
       if (isEditingBlurb) {
-        updateBlurbData(activeBlurbId, editingBlurbData);
+        updateBlurbData(activeBlurbId, editingBlurbData, editingBlurbFile);
       }
 
       if (isDeletingBlurb) {
@@ -122,6 +125,7 @@ class Blurbs extends React.Component {
     this.setState({
       activeBlurbId: null,
       editingBlurbData: null,
+      editingBlurbFile: null,
       isEditingBlurb: false,
       isDeletingBlurb: false
     });
@@ -134,15 +138,16 @@ class Blurbs extends React.Component {
     }));
   }
 
-  changeBlurbData = (data) => {
+  changeBlurbData = (data, file) => {
     this.setState({
       editingBlurbData: data,
+      editingBlurbFile: file,
       isChangePending: true
     });
   }
 
   render() {
-    const { activeBlurbId, blurbs, editingBlurbData, isChangePending, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
+    const { activeBlurbId, blurbs, editingBlurbData, editingBlurbFile, isChangePending, isDeletingBlurb, isEditingBlurb, isMenuVisible } = this.state;
 
     const menuActions = {
       onCancel: this.cancelBlurb,
@@ -156,6 +161,7 @@ class Blurbs extends React.Component {
         activeBlurbId={activeBlurbId}
         blurbs={blurbs}
         editingBlurbData={editingBlurbData}
+        editingBlurbFile={editingBlurbFile}
         isChangePending={isChangePending}
         isDeleting={isDeletingBlurb}
         isEditing={isEditingBlurb}
@@ -188,8 +194,8 @@ mutation saveBlurbPostitions($blurbPositions: [BlurbPositionInput]) {
 }`;
 
 const SAVE_BLURB_DATA_MUTATION = gql`
-mutation saveBlurbData($blurbId: ID!, $data: JSON) {
-  updateBlurbData(id: $blurbId, data: $data) {
+mutation saveBlurbData($blurbId: ID!, $data: JSON, $file: Upload) {
+  updateBlurbData(id: $blurbId, data: $data, file: $file) {
     id
     data
   }
@@ -247,8 +253,8 @@ export default compose(
   }),
   graphql(SAVE_BLURB_DATA_MUTATION, {
     props: ({ mutate }) => ({
-      updateBlurbData: ( blurbId, data ) => mutate({
-        variables: { blurbId, data },
+      updateBlurbData: ( blurbId, data, file ) => mutate({
+        variables: { blurbId, data, file },
         updateQueries: {
           currentEdition: (prev, { mutationResult }) => {
             const { id, data: newData } = mutationResult.data.updateBlurbData;
